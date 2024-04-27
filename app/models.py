@@ -54,3 +54,10 @@ class Client(models.Model):
         self.address = client_data.get("address", "") or self.address
 
         self.save()
+
+class Vet(models.Model):
+    name = models.CharField(max_length=100)
+    email = models.EmailField()
+    phone = models.CharField(max_length=15)
+    def __str__(self):
+        return self.name
