@@ -7,4 +7,5 @@ urlpatterns = [
     path("clientes/nuevo/", view=views.clients_form, name="clients_form"),
     path("clientes/editar/<int:id>/", view=views.clients_form, name="clients_edit"),
     path("clientes/eliminar/", view=views.clients_delete, name="clients_delete"),
+    path("veterinarios/", view=views.vets_repository, name="vets_repo"),
 ]
