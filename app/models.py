@@ -59,5 +59,21 @@ class Vet(models.Model):
     name = models.CharField(max_length=100)
     email = models.EmailField()
     phone = models.CharField(max_length=15)
+
     def __str__(self):
         return self.name
+    
+    @classmethod
+    def save_vet(cls, vet_data):
+        #errors = validate_vet(vet_data)
+
+        #if len(errors.keys()) > 0:
+        #    return False, errors
+
+        Vet.objects.create(
+            name=vet_data.get("name"),
+            phone=vet_data.get("phone"),
+            email=vet_data.get("email"),
+        )
+
+        return True, None
