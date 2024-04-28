@@ -1,6 +1,5 @@
 from django.shortcuts import render, redirect, reverse, get_object_or_404
-from .models import Client
-from .models import Product
+from .models import Client, Product
 
 
 def home(request):
