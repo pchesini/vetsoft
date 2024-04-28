@@ -77,3 +77,9 @@ class Vet(models.Model):
         )
 
         return True, None
+    
+    def update_vet(self, vet_data):
+        self.name = vet_data.get("name", "") or self.name
+        self.email = vet_data.get("email", "") or self.email
+        self.phone = vet_data.get("phone", "") or self.phone
+        self.save()

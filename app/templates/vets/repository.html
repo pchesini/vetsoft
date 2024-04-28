@@ -29,7 +29,7 @@
                     <td>{{vet.email}}</td>
                     <td>
                         <a class="btn btn-outline-primary"
-                           href=""
+                           href="{% url 'vets_edit' id=vet.id %}"
                         >Editar</a>
                         <form method="POST"
                             action=""
