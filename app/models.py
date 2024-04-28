@@ -65,10 +65,10 @@ class Vet(models.Model):
     
     @classmethod
     def save_vet(cls, vet_data):
-        #errors = validate_vet(vet_data)
+        errors = validate_client(vet_data)
 
-        #if len(errors.keys()) > 0:
-        #    return False, errors
+        if len(errors.keys()) > 0:
+            return False, errors
 
         Vet.objects.create(
             name=vet_data.get("name"),
