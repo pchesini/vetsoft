@@ -72,3 +72,10 @@ def products_form(request, id=None):
         product = get_object_or_404(Product, pk=id)
 
     return render(request, "products/form.html", {"product": product})
+
+def products_delete(request):
+    product_id = request.POST.get("product_id")
+    product = get_object_or_404(Product, pk=int(product_id))
+    product.delete()
+
+    return redirect(reverse("products_repo"))
