@@ -32,11 +32,11 @@
                            href="{% url 'vets_edit' id=vet.id %}"
                         >Editar</a>
                         <form method="POST"
-                            action=""
+                            action="{% url 'vets_delete' %}"
                             aria-label="Formulario de eliminación de veterinario">
                             {% csrf_token %}
 
-                            <input type="hidden" name="" value="" />
+                            <input type="hidden" name="vet_id" value="{{ vet.id }}" />
                             <button class="btn btn-outline-danger">Eliminar</button>
                         </form>
                     </td>
