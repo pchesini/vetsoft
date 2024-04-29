@@ -13,8 +13,8 @@ urlpatterns = [
     path("veterinarios/editar/<int:id>/", view=views.vets_form, name="vets_edit"),
      path("veterinarios/eliminar/", view=views.vets_delete, name="vets_delete"),
      
-    path("medicina/", view=views.vets_repository, name="medi_repo"),
-    path("medicina/nuevo/", view=views.vets_form, name="medi_form"),
-    path("medicina/editar/<int:id>/", view=views.vets_form, name="medi_edit"),
-    path("medicina/eliminar/", view=views.vets_delete, name="medi_delete"),  
+    path("medicina/", view=views.medis_repository, name="medi_repo"),
+    path("medicina/nuevo/", view=views.medis_form, name="medi_form"),
+    path("medicina/editar/<int:id>/", view=views.medis_form, name="medi_edit"),
+    path("medicina/eliminar/", view=views.medis_delete, name="medi_delete"),  
 ]
