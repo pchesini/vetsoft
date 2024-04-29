@@ -96,7 +96,7 @@ def medis_form(request, id=None):
         saved = True
 
         if medi_id == "":
-            saved, errors = Vet.save_medi(request.POST)
+            saved, errors = Medi.save_medi(request.POST)
         else:
             medi = get_object_or_404(Medi, pk=medi_id)
             medi.update_medi(request.POST)
@@ -105,18 +105,18 @@ def medis_form(request, id=None):
             return redirect(reverse("medi_repo"))
 
         return render(
-            request, "medis/form.html", {"errors": errors, "medi": request.POST}
+            request, "medicine/form.html", {"errors": errors, "medi": request.POST}
         )
 
     medi = None
     if id is not None:
-        medi = get_object_or_404(medi, pk=id)
+        medi = get_object_or_404(Medi, pk=id)
 
-    return render(request, "medis/form.html", {"medi": medi})
+    return render(request, "medicine/form.html", {"medi": medi})
 
 def medis_delete(request):
     medi_id = request.POST.get("medi_id")
-    medi = get_object_or_404(medi, pk=int(medi_id))
+    medi = get_object_or_404(Medi, pk=int(medi_id))
     medi.delete()
 
-    return redirect(reverse("medis_repo"))
+    return redirect(reverse("medi_repo"))

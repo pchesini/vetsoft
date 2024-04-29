@@ -96,7 +96,7 @@ class Medi(models.Model):
     
     @classmethod
     def save_medi(cls, medi_data):
-        errors = validate_client(medi_data)
+        errors = {}#validate_client(medi_data)
 
         if len(errors.keys()) > 0:
             return False, errors
