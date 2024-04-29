@@ -83,3 +83,34 @@ class Vet(models.Model):
         self.email = vet_data.get("email", "") or self.email
         self.phone = vet_data.get("phone", "") or self.phone
         self.save()
+
+
+# medicine
+
+class Medi(models.Model):
+    name = models.CharField(max_length=100)
+    description = models.TextField()
+    dose = models.IntegerField()
+    def __str__(self):
+        return self.name
+    
+    @classmethod
+    def save_medi(cls, medi_data):
+        errors = validate_client(medi_data)
+
+        if len(errors.keys()) > 0:
+            return False, errors
+
+        Medi.objects.create(
+            name=medi_data.get("name"),
+            description=medi_data.get("description"),
+            dose=medi_data.get("dose"),
+        )
+
+        return True, None
+    
+    def update_medi(self, medi_data):
+        self.name = medi_data.get("name", "") or self.name
+        self.description = medi_data.get("description", "") or self.description
+        self.dose = medi_data.get("dose", "") or self.dose
+        self.save()
