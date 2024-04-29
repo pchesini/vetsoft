@@ -22,11 +22,11 @@
         </thead>
 
         <tbody>
-            {% for producto in productos %}
+            {% for product in products %}
             <tr>
-                    <td>{{producto.name}}</td>
-                    <td>{{producto.type}}</td>
-                    <td>{{producto.price}}</td>
+                    <td>{{product.name}}</td>
+                    <td>{{product.type}}</td>
+                    <td>{{product.price}}</td>
                     <td>
                         <a class="btn btn-outline-primary"
                            href="{% url 'products_edit' id=product.id %}"
