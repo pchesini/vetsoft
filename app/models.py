@@ -101,4 +101,32 @@ class Product(models.Model):
         self.type = product_data.get("type", "") or self.type
         self.price = product_data.get("price", "") or self.price
 
-        self.save()
+
+class Vet(models.Model):
+    name = models.CharField(max_length=100)
+    email = models.EmailField()
+    phone = models.CharField(max_length=15)
+
+    def __str__(self):
+        return self.name
+    
+    @classmethod
+    def save_vet(cls, vet_data):
+        errors = validate_client(vet_data)
+
+        if len(errors.keys()) > 0:
+            return False, errors
+
+        Vet.objects.create(
+            name=vet_data.get("name"),
+            phone=vet_data.get("phone"),
+            email=vet_data.get("email"),
+        )
+
+        return True, None
+
+    def update_vet(self, vet_data):
+        self.name = vet_data.get("name", "") or self.name
+        self.email = vet_data.get("email", "") or self.email
+        self.phone = vet_data.get("phone", "") or self.phone
+        self.save()  
