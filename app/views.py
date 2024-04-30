@@ -1,6 +1,6 @@
 from django.http import HttpResponseBadRequest
 from django.shortcuts import render, redirect, reverse, get_object_or_404
-from .models import Client, Vet, Provider
+from .models import Client, Vet, Provider,Product
 
 
 def home(request):
@@ -45,6 +45,41 @@ def clients_delete(request):
 
     return redirect(reverse("clients_repo"))
 
+def products_repository(request):
+    products = Product.objects.all()
+    return render(request, "products/repository.html", {"products": products})
+
+def products_form(request, id=None):
+    if request.method == "POST":
+        product_id = request.POST.get("id", "")
+        errors = {}
+        saved = True
+
+        if product_id == "":
+            saved, errors = Product.save_product(request.POST)
+        else:
+            product = get_object_or_404(Product, pk=product_id)
+            product.update_product(request.POST)
+
+        if saved:
+            return redirect(reverse("products_repo"))
+
+        return render(
+            request, "products/form.html", {"errors": errors, "product": request.POST}
+        )
+
+    product = None
+    if id is not None:
+        product = get_object_or_404(Product, pk=id)
+
+    return render(request, "products/form.html", {"product": product})
+
+def products_delete(request):
+    product_id = request.POST.get("product_id")
+    product = get_object_or_404(Product, pk=int(product_id))
+    product.delete()
+
+    return redirect(reverse("products_repo"))
 
 def vets_repository(request):
     vets = Vet.objects.all()
