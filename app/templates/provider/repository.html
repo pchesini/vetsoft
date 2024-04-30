@@ -1,0 +1,52 @@
+{% extends 'base.html' %}
+
+{% block main %}
+<div class="container">
+    <h1 class="mb-4">Proveedores</h1>
+
+    <div class="mb-2">
+        <a href="{% url 'provider_form' %}" class="btn btn-primary">
+            <i class="bi bi-plus"></i>
+            Nuevo Proveedor
+        </a>
+    </div>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Nombre</th>
+                <th>Email</th>
+                <th></th>
+            </tr>
+        </thead>
+
+        <tbody>
+            {% for prov in provider %}
+            <tr>
+                    <td>{{prov.name}}</td>
+                    <td>{{prov.email}}</td>
+                    <td>
+                        <a class="btn btn-outline-primary"
+                           href="{% url 'provider_edit' id=prov.id %}"
+                        >Editar</a>
+                        <form method="POST"
+                            action="{% url 'provider_delete' %}"
+                            aria-label="Formulario de eliminación de proveedor">
+                            {% csrf_token %}
+
+                            <input type="hidden" name="prov_id" value="{{ prov.id }}" />
+                            <button class="btn btn-outline-danger">Eliminar</button>
+                        </form>
+                    </td>
+            </tr>
+            {% empty %}
+                <tr>
+                    <td colspan="5" class="text-center">
+                        No existen proveedores
+                    </td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}
