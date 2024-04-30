@@ -21,6 +21,22 @@ def validate_client(data):
 
     return errors
 
+def validate_provider(data):
+    errors = {}
+
+    name = data.get("name", "")
+    email = data.get("email", "")
+
+    if name == "":
+        errors["name"] = "Por favor ingrese un nombre"
+
+    if email == "":
+        errors["email"] = "Por favor ingrese un email"
+    elif email.count("@") == 0:
+        errors["email"] = "Por favor ingrese un email valido"
+
+    return errors
+
 
 class Client(models.Model):
     name = models.CharField(max_length=100)
@@ -94,7 +110,7 @@ class Provider(models.Model):
     
     @classmethod
     def save_provider(cls, provider_data):
-        errors = validate_client(provider_data)
+        errors = validate_provider(provider_data)
 
         if len(errors.keys()) > 0:
             return False, errors
@@ -106,7 +122,7 @@ class Provider(models.Model):
 
         return True, None
     
-    def provider(self, provider_data):
-        self.name = provider_data.get("name", "") or self.name
-        self.email = provider_data.get("email", "") or self.email
+    def update_provider(self, provider_data):
+        self.name = provider_data.get("name","") or self.name
+        self.email = provider_data.get("email","") or self.email
         self.save()
