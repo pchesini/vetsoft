@@ -21,6 +21,26 @@ def validate_client(data):
 
     return errors
 
+def validate_medicine(data):
+    errors = {}
+
+    name = data.get("name", "")
+    description = data.get("description", "")
+    dose = data.get("dose", "")
+
+    if name == "":
+        errors["name"] = "Por favor ingrese un nombre"
+
+    if description == "":
+        errors["description"] = "Por favor ingrese una descripcion"
+
+    if dose == "":
+        errors["dose"] = "Por favor ingrese una dosis"
+    elif int(dose) <= 0 : 
+        errors["dose"] = "La dosis no puede ser negativa o valer 0"
+
+    return errors
+
 
 class Client(models.Model):
     name = models.CharField(max_length=100)
@@ -87,6 +107,7 @@ class Vet(models.Model):
 
 # medicine
 
+
 class Medi(models.Model):
     name = models.CharField(max_length=100)
     description = models.TextField()
@@ -96,7 +117,7 @@ class Medi(models.Model):
     
     @classmethod
     def save_medi(cls, medi_data):
-        errors = {}#validate_client(medi_data)
+        errors = validate_medicine(medi_data)
 
         if len(errors.keys()) > 0:
             return False, errors
