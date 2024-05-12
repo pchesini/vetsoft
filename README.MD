@@ -35,6 +35,8 @@ Aplicación web para veterinarias utilizada en la cursada 2024 de Ingeniería y 
 
 ## Desplegar contenedor
 
-`docker run -d -p 8000:8000 --name "Vetsoft" vetsoft-app:1.0`
+Antes de desplegar debemos crea el archivo .env en la raiz del repositorio y completarlo, para hacerlo se puede seguir el .env-example
+
+`docker run -d -p 8000:8000 --env-file .env --name "Vetsoft" vetsoft-app:1.0`
 
 Luego se puede acceder a la aplicacion desde localhost:8000

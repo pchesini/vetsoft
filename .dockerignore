@@ -6,3 +6,4 @@ Dockerfile
 .editorconfig
 __pycache__
 functional_tests
+.env
