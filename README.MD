@@ -37,4 +37,4 @@ Aplicación web para veterinarias utilizada en la cursada 2024 de Ingeniería y 
 
 `docker run -d -p 8000:8000 --name "Vetsoft" vetsoft-app:1.0`
 
-Luego se puede acceder a la aplicacion desde https://localhost:8000
+Luego se puede acceder a la aplicacion desde localhost:8000
