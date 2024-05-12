@@ -1,0 +1,8 @@
+README.MD
+Dockerfile
+.git
+.ruff
+.gitignore
+.editorconfig
+__pycache__
+functional_tests

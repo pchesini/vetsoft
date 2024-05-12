@@ -28,3 +28,13 @@ Aplicación web para veterinarias utilizada en la cursada 2024 de Ingeniería y 
 ## Iniciar app
 
 `python manage.py runserver`
+
+## Construir imagen docker
+
+`docker build -t vetsoft-app:1.0 .`
+
+## Desplegar contenedor
+
+`docker run -d -p 8000:8000 --name "Vetsoft" vetsoft-app:1.0`
+
+Luego se puede acceder a la aplicacion desde https://localhost:8000
