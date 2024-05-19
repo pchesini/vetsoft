@@ -1,4 +1,12 @@
-SECRET_KEY= ""
+#Una clave secreta para una instalación particular de Django.
+#Esto se utiliza para proporcionar firmas criptográficas y debe configurarse con un valor único e impredecible.
+SECRET_KEY= "" 
+
+#Un booleano que activa/desactiva el modo de depuración.
 DEBUG=False
+
+#Configuracion de la base de datos
 DBENGINE=django.db.backends.sqlite3
+
+#Nombre de la base de datos
 DBNAME=db.sqlite3
