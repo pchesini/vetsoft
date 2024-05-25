@@ -140,7 +140,11 @@ class Product(models.Model):
         self.name = product_data.get("name", "") or self.name
         self.type = product_data.get("type", "") or self.type
         self.price = product_data.get("price", "") or self.price
+        errors = validate_product(product_data)
+        if errors:
+            return False, errors
         self.save()
+        return True, None
 
 class Vet(models.Model):
     name = models.CharField(max_length=100)
