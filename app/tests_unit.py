@@ -1,5 +1,5 @@
 from django.test import TestCase
-from app.models import Client, Medicine
+from app.models import Client, Medi
 
 class ClientModelTest(TestCase):
     def test_can_create_and_get_client(self):
@@ -58,33 +58,56 @@ class ClientModelTest(TestCase):
         self.assertEqual(client_updated.phone, "221555232")
 
 class MedicineModelTest(TestCase):
-    def test_medicine_dose_range(self):
-        # Crear una medicina con una dosis válida (5)
-        valid_medicine_data = {
-            "name": "Aspirina",
-            "description": "Medicamento para el dolor de cabeza",
-            "dose": "5"
-        }
-        errors = Medicine.validate_medicine(valid_medicine_data)
-        self.assertEqual(len(errors), 0)
+    #verifica si se puede crear un nuevo medicamento y si se guarda en la bd
+    def test_can_create_and_get_medicine(self):
+        Medi.save_medi(
+            {
+                "name": "Paracetamol",
+                "description": "Analgesico",
+                "dose": "5",  
+            }
+        )
+        medicines = Medi.objects.all()
+        self.assertEqual(len(medicines), 1)
 
-        # Crear una medicina con una dosis menor a 1
-        low_dose_medicine_data = {
-            "name": "Paracetamol",
-            "description": "Medicamento para la fiebre",
-            "dose": "0"
-        }
-        errors = Medicine.validate_medicine(low_dose_medicine_data)
-        self.assertIn("dose", errors)
-        self.assertEqual(errors["dose"], "La dosis no puede ser negativa o valer 0")
+        self.assertEqual(medicines[0].name, "Paracetamol")
+        self.assertEqual(medicines[0].description, "Analgesico")
+        self.assertEqual(medicines[0].dose, 5)
+    
+    #Esta prueba comprueba si se puede actualizar la dosis de un medicamento 
+    def test_can_update_medicine(self):
+        Medi.save_medi(
+            {
+                "name": "Paracetamol",
+                "description": "Analgesico",
+                "dose": "5",  
+            }
+        )
+        medicine = Medi.objects.get(pk=1)
 
-        # Crear una medicina con una dosis mayor a 10
-        high_dose_medicine_data = {
-            "name": "Ibuprofeno",
-            "description": "Medicamento para el dolor",
-            "dose": "15"
-        }
-        errors = Medicine.validate_medicine(high_dose_medicine_data)
-        self.assertIn("dose", errors)
-        self.assertEqual(errors["dose"], "La dosis debe estar entre 1 y 10")
-        
+        self.assertEqual(medicine.dose, 5)
+
+        medicine.update_medi({"dose": "9"})  # Nueva dosis
+
+        medicine_updated = Medi.objects.get(pk=1)
+
+        self.assertEqual(medicine_updated.dose, 9)
+
+    def test_update_medicine_with_error(self):
+        Medi.save_medi(
+            {
+                "name": "Paracetamol",
+                "description": "Analgesico",
+                "dose": "5", 
+            }
+        )
+        medicine = Medi.objects.get(pk=1)
+
+        self.assertEqual(medicine.dose, 5)
+
+        # Intentamos actualizar la dosis con un valor inválido en este caso vacio
+        medicine.update_medi({"dose": ""})
+
+        # El valor de la dosis no debe haber cambiado
+        medicine_updated = Medi.objects.get(pk=1)
+        self.assertEqual(medicine_updated.dose, 5, "La dosis no debe cambiar si se proporciona un valor de dosis inválido")

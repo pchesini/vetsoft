@@ -5,7 +5,7 @@ from playwright.sync_api import sync_playwright, expect, Browser
 
 from django.urls import reverse
 
-from app.models import Client
+from app.models import Client 
 
 os.environ["DJANGO_ALLOW_ASYNC_UNSAFE"] = "true"
 playwright = sync_playwright().start()
