@@ -140,7 +140,7 @@ class Product(models.Model):
         self.name = product_data.get("name", "") or self.name
         self.type = product_data.get("type", "") or self.type
         self.price = product_data.get("price", "") or self.price
-
+        self.save
 
 class Vet(models.Model):
     name = models.CharField(max_length=100)
