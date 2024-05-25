@@ -54,10 +54,20 @@ def validate_product(data):
     if type == "":
         errors["type"] = "Por favor ingrese un tipo"
 
-    if price == "":
+    '''if price == "":
         errors["price"] = "Por favor ingrese un precio"
     elif float(price) <= 0:
         errors["price"] = "Por favor ingrese un precio mayor a cero"
+    '''
+    if price == "":
+        errors["price"] = "Por favor ingrese un precio"
+    else:
+        try:
+            price_float = float(price)
+            if price_float <= 0:
+                errors["price"] = "Por favor ingrese un precio mayor a cero"
+        except ValueError:
+            errors["price"] = "Por favor ingrese un precio válido"
 
     return errors
 
@@ -139,10 +149,18 @@ class Product(models.Model):
     def update_product(self, product_data):
         self.name = product_data.get("name", "") or self.name
         self.type = product_data.get("type", "") or self.type
-        self.price = product_data.get("price", "") or self.price
-        errors = validate_product(product_data)
-        if errors:
-            return False, errors
+        try:
+            price = float(product_data.get("price", ""))
+        except ValueError:
+        # Si el precio no es un valor numérico válido, retorna un mensaje de error
+            return False, {"price": "Por favor ingrese un precio válido"}
+    
+        if price <= 0:
+        # Si el precio es menor o igual a cero, retorna un mensaje de error
+            return False, {"price": "Por favor ingrese un precio mayor a cero"}
+    
+        # Si no hay errores, actualiza el precio y guarda el objeto en la base de datos
+        self.price = price
         self.save()
         return True, None
 
