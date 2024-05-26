@@ -249,7 +249,7 @@ class ProviderRepoTestCase(PlaywrightTestCase):
 
         expect(self.page.get_by_text("No existen proveedores")).to_be_visible()
 
-    def test_should_show_provideras_data(self):
+    def test_should_show_providers_data(self):
         Provider.objects.create(
             name="Proveedor Ejemplo",
             email="proveedor@ejemplo.com",
