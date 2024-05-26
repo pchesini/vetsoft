@@ -65,6 +65,23 @@
                         </div>
                     {% endif %}
                 </div>
+                <div>
+                    <label for="specialty" class="form-label">Especialidad</label>
+                    <select type="specialty"
+                        id="specialty"
+                        name="specialty"
+                        class="form-select" required>
+                        {% for value, label in specialties %}
+                        <option value="{{ value }}">{{ label }}</option>
+                        {% endfor %}
+                    </select>
+
+                    {% if errors.email %}
+                        <div class="invalid-feedback">
+                            {{ errors.specialty }}
+                        </div>
+                    {% endif %}
+                </div>
                 <button class="btn btn-primary">Guardar</button>
             </form>
         </div>
