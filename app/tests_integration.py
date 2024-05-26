@@ -107,14 +107,8 @@ class MedicineTest(TestCase):
                 "dose": "0",  # Dosis fuera del rango permitido (menor que 1)
             },
         )
+        self.assertContains(response, "Por favor ingrese una dosis entre 1 y 10")
 
-        # Verificamos si la respuesta es un redireccionamiento (302)
-        if response.status_code == 302:
-            # Imprimimos el mensaje de error en la consola
-            print("Mensaje de error: Por favor ingrese una dosis entre 1 y 10")
-        else:
-            # Si la respuesta no es un redireccionamiento, la prueba ha fallado
-            print("La prueba ha fallado: No se esperaba un redireccionamiento")
 
     def test_validation_invalid_dose_above_range(self):
         # Enviamos una solicitud POST al formulario de creación de medicamentos con una dosis inválida (fuera del rango permitido, mayor que 10)
@@ -123,17 +117,11 @@ class MedicineTest(TestCase):
             data={
                 "name": "Paracetamol",
                 "description": "Analgesico",
-                "dose": "15",  # Dosis fuera del rango permitido (mayor que 10)
+                "dose": 15,  # Dosis fuera del rango permitido (mayor que 10)
             },
         )
 
-        # Verificamos si la respuesta es un redireccionamiento (302)
-        if response.status_code == 302:
-            # Imprimimos el mensaje de error en la consola
-            print("Mensaje de error: Por favor ingrese una dosis entre 1 y 10")
-        else:
-            # Si la respuesta no es un redireccionamiento, la prueba ha fallado
-            print("La prueba ha fallado: No se esperaba un redireccionamiento")
+        self.assertContains(response, "Por favor ingrese una dosis entre 1 y 10")
 
     def test_edit_medicine_with_valid_data(self):
         # Creamos un medicamento en la base de datos
