@@ -1,5 +1,5 @@
 from django.test import TestCase
-from app.models import Client
+from app.models import Client, Provider
 
 
 class ClientModelTest(TestCase):
@@ -57,3 +57,20 @@ class ClientModelTest(TestCase):
         client_updated = Client.objects.get(pk=1)
 
         self.assertEqual(client_updated.phone, "221555232")
+
+
+
+
+class ProviderModelTest(TestCase):
+    def test_can_create_and_get_provider(self):
+        Provider.objects.create(
+            name="Proveedor Ejemplo",
+            email="proveedor@ejemplo.com",
+            address="13 y 32",
+        )
+        providers = Provider.objects.all()
+        self.assertEqual(len(providers), 1)
+
+        self.assertEqual(providers[0].name, "Proveedor Ejemplo")
+        self.assertEqual(providers[0].email, "proveedor@ejemplo.com")
+        self.assertEqual(providers[0].address, "13 y 32")
