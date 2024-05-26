@@ -5,7 +5,7 @@ from playwright.sync_api import sync_playwright, expect, Browser
 
 from django.urls import reverse
 
-from app.models import Client
+from app.models import Client, Provider
 
 os.environ["DJANGO_ALLOW_ASYNC_UNSAFE"] = "true"
 playwright = sync_playwright().start()
@@ -241,4 +241,137 @@ class ClientCreateEditTestCase(PlaywrightTestCase):
         edit_action = self.page.get_by_role("link", name="Editar")
         expect(edit_action).to_have_attribute(
             "href", reverse("clients_edit", kwargs={"id": client.id})
+        )
+
+class ProviderRepoTestCase(PlaywrightTestCase):
+    def test_should_show_message_if_table_is_empty(self):
+        self.page.goto(f"{self.live_server_url}{reverse('provider_repo')}")
+
+        expect(self.page.get_by_text("No existen proveedores")).to_be_visible()
+
+    def test_should_show_provideras_data(self):
+        Provider.objects.create(
+            name="Proveedor Ejemplo",
+            email="proveedor@ejemplo.com",
+            address="13 y 32",
+        )
+
+        self.page.goto(f"{self.live_server_url}{reverse('provider_repo')}")
+
+        expect(self.page.get_by_text("No existen proveedores")).not_to_be_visible()
+
+        expect(self.page.get_by_text("Proveedor Ejemplo")).to_be_visible()
+        expect(self.page.get_by_text("proveedor@ejemplo.com")).to_be_visible()
+        expect(self.page.get_by_text("13 y 32")).to_be_visible()
+
+    def test_should_show_add_provider_action(self):
+        self.page.goto(f"{self.live_server_url}{reverse('provider_repo')}")
+
+        add_provider_action = self.page.get_by_role(
+            "link", name="Nuevo proveedor", exact=False
+        )
+        expect(add_provider_action).to_have_attribute("href", reverse("provider_form"))
+
+    def test_should_show_provider_edit_action(self):
+        provider = Provider.objects.create(
+            name="Proveedor Ejemplo",
+            email="proveedor@ejemplo.com",
+            address="13 y 32",
+        )
+
+        self.page.goto(f"{self.live_server_url}{reverse('provider_repo')}")
+
+        edit_action = self.page.get_by_role("link", name="Editar")
+        expect(edit_action).to_have_attribute(
+            "href", reverse("provider_edit", kwargs={"id": provider.id})
+        )
+
+    def test_should_can_be_able_to_delete_a_provider(self):
+        Provider.objects.create(
+            name="Proveedor Ejemplo",
+            email="proveedor@ejemplo.com",
+            address="13 y 32",
+        )
+
+        self.page.goto(f"{self.live_server_url}{reverse('provider_repo')}")
+
+        expect(self.page.get_by_text("Proveedor Ejemplo")).to_be_visible()
+
+        def is_delete_response(response):
+            return response.url.find(reverse("provider_delete"))
+
+        # verificamos que el envio del formulario fue exitoso
+        with self.page.expect_response(is_delete_response) as response_info:
+            self.page.get_by_role("button", name="Eliminar").click()
+
+        response = response_info.value
+        self.assertTrue(response.status < 400)
+
+        expect(self.page.get_by_text("Proveedor Ejemplo")).not_to_be_visible()
+
+
+class ProviderCreateEditTestCase(PlaywrightTestCase):
+    def test_should_be_able_to_create_a_new_provider(self):
+        self.page.goto(f"{self.live_server_url}{reverse('provider_form')}")
+
+        expect(self.page.get_by_role("form")).to_be_visible()
+
+        self.page.get_by_label("Nombre").fill("Proveedor Ejemplo")
+        self.page.get_by_label("Email").fill("proveedor@ejemplo.com")
+        self.page.get_by_label("Dirección").fill("13 y 32")
+
+        self.page.get_by_role("button", name="Guardar").click()
+
+        expect(self.page.get_by_text("Proveedor Ejemplo")).to_be_visible()
+        expect(self.page.get_by_text("proveedor@ejemplo.com")).to_be_visible()
+        expect(self.page.get_by_text("13 y 32")).to_be_visible()
+
+    def test_should_view_errors_if_form_is_invalid(self):
+        self.page.goto(f"{self.live_server_url}{reverse('provider_form')}")
+
+        expect(self.page.get_by_role("form")).to_be_visible()
+
+        self.page.get_by_role("button", name="Guardar").click()
+
+        expect(self.page.get_by_text("Por favor ingrese un nombre")).to_be_visible()
+        expect(self.page.get_by_text("Por favor ingrese un email")).to_be_visible()
+        expect(self.page.get_by_text("Por favor ingrese una dirección")).to_be_visible()
+
+        self.page.get_by_label("Nombre").fill("Proveedor Ejemplo")
+        self.page.get_by_label("Email").fill("proveedor@ejemplo.com")
+        self.page.get_by_label("Dirección").fill("13 y 32")
+
+        self.page.get_by_role("button", name="Guardar").click()
+
+        expect(self.page.get_by_text("Por favor ingrese un nombre")).not_to_be_visible()
+        expect(self.page.get_by_text("Por favor ingrese un email")).not_to_be_visible()
+        expect(self.page.get_by_text("Por favor ingrese una dirección")).not_to_be_visible()
+
+    def test_should_be_able_to_edit_a_provider(self):
+        provider = Provider.objects.create(
+            name="Proveedor Ejemplo",
+            email="proveedor@ejemplo.com",
+            address="13 y 32",
+        )
+
+        path = reverse("provider_edit", kwargs={"id": provider.id})
+        self.page.goto(f"{self.live_server_url}{path}")
+
+        self.page.get_by_label("Nombre").fill("Nuevo Proveedor")
+        self.page.get_by_label("Email").fill("nuevo@proveedor.com")
+        self.page.get_by_label("Dirección").fill("Nueva Calle 123")
+
+        self.page.get_by_role("button", name="Guardar").click()
+
+        expect(self.page.get_by_role("link", name="Nuevo Proveedor")).to_be_visible()
+        expect(self.page.get_by_text("nuevo@proveedor.com")).to_be_visible()
+        expect(self.page.get_by_text("Nueva Calle 123")).to_be_visible()
+
+        expect(self.page.get_by_text("Proveedor Ejemplo")).not_to_be_visible()
+        expect(self.page.get_by_text("proveedor@ejemplo.com")).not_to_be_visible()
+        expect(self.page.get_by_text("13 y 32")).not_to_be_visible()
+
+        edit_action = self.page.get_by_role("link", name="Editar")
+        expect(edit_action).to_have_attribute(
+            "href", reverse("provider_edit", kwargs={"id": provider.id})
         )
