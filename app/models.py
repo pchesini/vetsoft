@@ -22,24 +22,29 @@ def validate_client(data):
 
 
 def validate_medicine(data):
-    errors = {}
+        errors = {}
 
-    name = data.get("name", "")
-    description = data.get("description", "")
-    dose = data.get("dose", "")
+        name = data.get("name", "")
+        description = data.get("description", "")
+        dose = data.get("dose", "")
 
-    if name == "":
-        errors["name"] = "Por favor ingrese un nombre"
+        if name == "":
+            errors["name"] = "Por favor ingrese un nombre"
 
-    if description == "":
-        errors["description"] = "Por favor ingrese una descripcion"
+        if description == "":
+            errors["description"] = "Por favor ingrese una descripcion"
 
-    if dose == "":
-        errors["dose"] = "Por favor ingrese una dosis"
-    elif int(dose) <= 0:
-        errors["dose"] = "La dosis no puede ser negativa o valer 0"
+        if dose == "":
+            errors["dose"] = "Por favor ingrese una dosis"
+        else:
+            try:
+                dose_value = int(dose)
+                if dose_value < 1 or dose_value > 10:
+                    errors["dose"] = "Por favor ingrese una dosis entre 1 y 10"
+            except ValueError:
+             errors["dose"] = "La dosis debe ser un número entero"
 
-    return errors
+        return errors
 
 def validate_product(data):
     errors = {}
@@ -200,6 +205,8 @@ class Medi(models.Model):
         self.description = medi_data.get("description", "") or self.description
         self.dose = medi_data.get("dose", "") or self.dose
         self.save()
+    
+ 
 
 
 class Provider(models.Model):
