@@ -37,7 +37,7 @@ class ProductModelTest(TestCase):
 
         self.assertEqual(product_updated.price, 200.0)
 
-    def test_update_product_with_error(self):
+    def test_update_product_with_empty_price(self):
         Product.save_product(
             {
                 "name": "Producto 1",
@@ -50,6 +50,42 @@ class ProductModelTest(TestCase):
         self.assertEqual(product.price, 100.0)
 
         product.update_product({"price": ""})
+
+        product_updated = Product.objects.get(pk=1)
+
+        self.assertEqual(product_updated.price, 100.0)
+
+    def test_update_product_with_negative_price(self):
+        Product.save_product(
+            {
+                "name": "Producto 1",
+                "type": "Alimento",
+                "price": 100.0,
+            }
+        )
+        product = Product.objects.get(pk=1)
+
+        self.assertEqual(product.price, 100.0)
+
+        product.update_product({"price": -100.0})
+
+        product_updated = Product.objects.get(pk=1)
+
+        self.assertEqual(product_updated.price, 100.0)
+
+    def test_update_product_with_price_zero(self):
+        Product.save_product(
+            {
+                "name": "Producto 1",
+                "type": "Alimento",
+                "price": 100.0,
+            }
+        )
+        product = Product.objects.get(pk=1)
+
+        self.assertEqual(product.price, 100.0)
+
+        product.update_product({"price": 0.0})
 
         product_updated = Product.objects.get(pk=1)
 
