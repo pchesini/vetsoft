@@ -1,4 +1,5 @@
 from django.db import models
+from django.utils.translation import gettext_lazy as _
 
 def validate_client(data):
     errors = {}
@@ -144,13 +145,13 @@ class Product(models.Model):
 
 class Vet(models.Model):
     class VetSpecialties(models.TextChoices):
-        SIN_ESPECIALIDAD="Sin especialidad"
-        CARDIOLOGIA="Cardiología"
-        MEDICINA_INTERNA_PEQUENOS_ANIMALES="Medicina interna de pequeños animales"
-        MEDICINA_INTERNA_GRANDES_ANIMALES="Medicina interna de grandes animales"
-        NEUROLOGIA="Neurología"
-        ONCOLOGIA="Oncología"
-        NUTRICION="Nutrición"
+        SIN_ESPECIALIDAD="Sin especialidad", _("Sin especialidad")
+        CARDIOLOGIA="Cardiología", _("Cardiología")
+        MEDICINA_INTERNA_PEQUENOS_ANIMALES="Medicina interna de pequeños animales", _("Medicina interna de pequeños animales")
+        MEDICINA_INTERNA_GRANDES_ANIMALES="Medicina interna de grandes animales", _("Medicina interna de grandes animales")
+        NEUROLOGIA="Neurología", _("Neurología")
+        ONCOLOGIA="Oncología", _("Oncología")
+        NUTRICION="Nutrición", _("Nutrición")
 
 
     name = models.CharField(max_length=100)
