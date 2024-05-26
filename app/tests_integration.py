@@ -1,6 +1,6 @@
 from django.test import TestCase
 from django.shortcuts import reverse
-from app.models import Client
+from app.models import Client, Provider
 
 
 class HomePageTest(TestCase):
@@ -93,3 +93,59 @@ class ClientsTest(TestCase):
         self.assertEqual(editedClient.phone, client.phone)
         self.assertEqual(editedClient.address, client.address)
         self.assertEqual(editedClient.email, client.email)
+
+
+class ProviderIntegrationTest(TestCase):
+    def test_can_create_provider(self):
+        response = self.client.post(
+            reverse("provider_form"),
+            data={
+                "name": "Proveedor Ejemplo",
+                "email": "proveedor@ejemplo.com",
+                "address": "Calle Falsa 123",
+            },
+        )
+        providers = Provider.objects.all()
+        self.assertEqual(len(providers), 1)
+
+        self.assertEqual(providers[0].name, "Proveedor Ejemplo")
+        self.assertEqual(providers[0].email, "proveedor@ejemplo.com")
+        self.assertEqual(providers[0].address, "Calle Falsa 123")
+
+        self.assertRedirects(response, reverse("provider_repo"))
+
+    def test_validation_errors_create_provider(self):
+        response = self.client.post(
+            reverse("provider_form"),
+            data={},
+        )
+
+        self.assertContains(response, "Por favor ingrese un nombre")
+        self.assertContains(response, "Por favor ingrese un email")
+        self.assertContains(response, "Por favor ingrese una dirección")
+
+    def test_should_response_with_404_status_if_provider_doesnt_exists(self):
+        response = self.client.get(reverse("provider_edit", kwargs={"id": 100}))
+        self.assertEqual(response.status_code, 404)
+
+    def test_edit_provider_with_valid_data(self):
+        provider = Provider.objects.create(
+            name="Proveedor Ejemplo",
+            email="proveedor@ejemplo.com",
+            address="Calle Falsa 123",
+        )
+
+        response = self.client.post(
+            reverse("provider_form"),
+            data={
+                "id": provider.id,
+                "name": "Nuevo Proveedor",
+            },
+        )
+
+        self.assertEqual(response.status_code, 302)
+
+        editedProvider = Provider.objects.get(pk=provider.id)
+        self.assertEqual(editedProvider.name, "Nuevo Proveedor")
+        self.assertEqual(editedProvider.email, provider.email)
+        self.assertEqual(editedProvider.address, provider.address)
