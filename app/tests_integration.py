@@ -1,6 +1,6 @@
 from django.test import TestCase
 from django.shortcuts import reverse
-from app.models import Client
+from app.models import Client,Vet
 
 
 class HomePageTest(TestCase):
@@ -93,3 +93,27 @@ class ClientsTest(TestCase):
         self.assertEqual(editedClient.phone, client.phone)
         self.assertEqual(editedClient.address, client.address)
         self.assertEqual(editedClient.email, client.email)
+
+
+class VetsTest(TestCase):
+    def test_vet_table_shows_specialty(self):
+
+        self.client.post(
+            reverse("vets_form"),
+            data={
+                "name": "Mariano Navone",
+                "phone": "2219870789",
+                "email": "lanavoneta@gmail.com",
+                "specialty": Vet.VetSpecialties.ONCOLOGIA
+            },
+        )
+
+        vet = Vet.objects.all()[0]  #Creo un vet y lo recupero
+
+
+        response = self.client.get(reverse("vets_repo"))
+        self.assertTemplateUsed(response, "vets/repository.html")
+        self.assertContains(response, '<table')
+        self.assertContains(response, '<th>Especialidad') #Verifico que la tabla tenga especialidad
+        self.assertContains(response, vet.specialty) #Verifico que la especialidad se muestre
+
