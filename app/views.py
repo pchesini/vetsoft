@@ -59,7 +59,7 @@ def products_form(request, id=None):
             saved, errors = Product.save_product(request.POST)
         else:
             product = get_object_or_404(Product, pk=product_id)
-            product.update_product(request.POST)
+            saved, errors = product.update_product(request.POST)
 
         if saved:
             return redirect(reverse("products_repo"))
@@ -87,6 +87,8 @@ def vets_repository(request):
 
 
 def vets_form(request, id=None):
+
+    specialties = Vet.VetSpecialties.choices
     if request.method == "POST":
         vet_id = request.POST.get("id", "")
         errors = {}
@@ -102,14 +104,14 @@ def vets_form(request, id=None):
             return redirect(reverse("vets_repo"))
 
         return render(
-            request, "vets/form.html", {"errors": errors, "vet": request.POST}
+            request, "vets/form.html", {"errors": errors, "vet": request.POST, "specialties" : specialties}
         )
 
     vet = None
     if id is not None:
         vet = get_object_or_404(Vet, pk=id)
 
-    return render(request, "vets/form.html", {"vet": vet})
+    return render(request, "vets/form.html", {"vet": vet, "specialties" : specialties})
 
 def vets_delete(request):
     vet_id = request.POST.get("vet_id")
