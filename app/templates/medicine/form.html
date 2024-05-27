@@ -36,7 +36,7 @@
                     {% endif %}
                 </div>
                 <div>
-                    <label for="phone" class="form-label">Descripcion</label>
+                    <label for="description" class="form-label">Descripcion</label>
                     <input type="text"
                         id="description"
                         name="description"
@@ -55,7 +55,7 @@
                     <input type="number"
                         id="dose"
                         name="dose"
-                        class="form-control"
+                        class="form-control {% if errors.dose %}is-invalid{% endif %}"
                         value="{{ medi.dose }}"
                         required/>
 
