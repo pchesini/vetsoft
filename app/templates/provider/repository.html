@@ -16,6 +16,7 @@
             <tr>
                 <th>Nombre</th>
                 <th>Email</th>
+                <th>Dirección</th>
                 <th></th>
             </tr>
         </thead>
@@ -25,6 +26,7 @@
             <tr>
                     <td>{{prov.name}}</td>
                     <td>{{prov.email}}</td>
+                    <td>{{prov.address}}</td>
                     <td>
                         <a class="btn btn-outline-primary"
                            href="{% url 'provider_edit' id=prov.id %}"
