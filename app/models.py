@@ -1,4 +1,5 @@
 from django.db import models
+from django.utils.translation import gettext_lazy as _
 
 def validate_client(data):
     errors = {}
@@ -165,13 +166,28 @@ class Product(models.Model):
         return True, None
 
 class Vet(models.Model):
+    class VetSpecialties(models.TextChoices):
+        SIN_ESPECIALIDAD="Sin especialidad", _("Sin especialidad")
+        CARDIOLOGIA="Cardiología", _("Cardiología")
+        MEDICINA_INTERNA_PEQUENOS_ANIMALES="Medicina interna de pequeños animales", _("Medicina interna de pequeños animales")
+        MEDICINA_INTERNA_GRANDES_ANIMALES="Medicina interna de grandes animales", _("Medicina interna de grandes animales")
+        NEUROLOGIA="Neurología", _("Neurología")
+        ONCOLOGIA="Oncología", _("Oncología")
+        NUTRICION="Nutrición", _("Nutrición")
+
+
     name = models.CharField(max_length=100)
     email = models.EmailField()
     phone = models.CharField(max_length=15)
+    specialty = models.CharField(
+        max_length=100,
+        choices=VetSpecialties,
+        default=VetSpecialties.SIN_ESPECIALIDAD
+    )
 
     def __str__(self):
         return self.name
-    
+
     @classmethod
     def save_vet(cls, vet_data):
         errors = validate_client(vet_data)
@@ -183,6 +199,7 @@ class Vet(models.Model):
             name=vet_data.get("name"),
             phone=vet_data.get("phone"),
             email=vet_data.get("email"),
+            specialty=vet_data.get("specialty"),
         )
 
         return True, None
@@ -191,6 +208,7 @@ class Vet(models.Model):
         self.name = vet_data.get("name", "") or self.name
         self.email = vet_data.get("email", "") or self.email
         self.phone = vet_data.get("phone", "") or self.phone
+        self.specialty = vet_data.get("specialty", "") or self.specialty
         self.save()
 
 
@@ -201,7 +219,7 @@ class Medi(models.Model):
 
     def __str__(self):
         return self.name
-    
+
     @classmethod
     def save_medi(cls, medi_data):
         errors = validate_medicine(medi_data)
@@ -216,7 +234,7 @@ class Medi(models.Model):
         )
 
         return True, None
-    
+
     def update_medi(self, medi_data):
         self.name = medi_data.get("name", "") or self.name
         self.description = medi_data.get("description", "") or self.description
@@ -230,7 +248,7 @@ class Provider(models.Model):
 
     def __str__(self):
         return self.name
-    
+
     @classmethod
     def save_provider(cls, provider_data):
         errors = validate_provider(provider_data)
@@ -244,7 +262,7 @@ class Provider(models.Model):
         )
 
         return True, None
-    
+
     def update_provider(self, provider_data):
         self.name = provider_data.get("name","") or self.name
         self.email = provider_data.get("email","") or self.email

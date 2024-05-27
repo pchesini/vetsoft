@@ -1,5 +1,5 @@
 from django.test import TestCase
-from app.models import Product, Client
+from app.models import Product, Client, Vet
 
 
 class ClientModelTest(TestCase):
@@ -58,6 +58,56 @@ class ClientModelTest(TestCase):
 
         self.assertEqual(client_updated.phone, "221555232")
 
+class VetModelTest(TestCase):
+
+    def test_can_create_and_get_vet(self):
+        Vet.save_vet(
+            {
+                "name": "Mariano Navone",
+                "phone": "2219870789",
+                "email": "lanavoneta@gmail.com",
+                "specialty": Vet.VetSpecialties.SIN_ESPECIALIDAD
+            }
+        )
+        vets = Vet.objects.all()
+        self.assertEqual(len(vets), 1)
+
+        self.assertEqual(vets[0].name, "Mariano Navone")
+        self.assertEqual(vets[0].phone, "2219870789")
+        self.assertEqual(vets[0].email, "lanavoneta@gmail.com")
+        self.assertEqual(vets[0].specialty, Vet.VetSpecialties.SIN_ESPECIALIDAD)
+
+    def test_can_update_vet_specialty(self):
+        Vet.save_vet(
+            {
+                "name": "Mariano Navone",
+                "phone": "2219870789",
+                "email": "lanavoneta@gmail.com",
+                "specialty": Vet.VetSpecialties.SIN_ESPECIALIDAD
+            }
+        )
+        vet = Vet.objects.get(pk=1)
+
+        self.assertEqual(vet.specialty, Vet.VetSpecialties.SIN_ESPECIALIDAD)
+
+        vet.update_vet({"specialty": Vet.VetSpecialties.CARDIOLOGIA})
+
+        vet_updated = Vet.objects.get(pk=1)
+
+        self.assertEqual(vet_updated.specialty, Vet.VetSpecialties.CARDIOLOGIA)
+
+    def test_specialty_choices(self):
+        expected_choices = [
+            ("Sin especialidad", "Sin especialidad"),
+            ("Cardiología", "Cardiología"),
+            ("Medicina interna de pequeños animales", "Medicina interna de pequeños animales"),
+            ("Medicina interna de grandes animales", "Medicina interna de grandes animales"),
+            ("Neurología", "Neurología"),
+            ("Oncología", "Oncología"),
+            ("Nutrición", "Nutrición"),
+        ]
+
+        self.assertEqual(Vet.VetSpecialties.choices, expected_choices)
 
 class ProductModelTest(TestCase):
     def test_can_create_and_get_product(self):
@@ -83,7 +133,7 @@ class ProductModelTest(TestCase):
                 "price": 100.0,
             }
         )
-        
+
         product = Product.objects.get(pk=1)
 
         self.assertEqual(product.price, 100.0)
