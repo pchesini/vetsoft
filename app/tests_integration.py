@@ -1,6 +1,7 @@
-from django.test import TestCase
 from django.shortcuts import reverse
-from app.models import Product, Client, Vet, Provider, Medi
+from django.test import TestCase
+
+from app.models import Client, Medi, Product, Provider, Vet
 
 
 class HomePageTest(TestCase):
