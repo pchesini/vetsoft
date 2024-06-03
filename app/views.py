@@ -1,4 +1,3 @@
-from django.http import HttpResponseBadRequest
 from django.shortcuts import render, redirect, reverse, get_object_or_404
 from .models import Client, Vet, Provider,Product, Medi
 

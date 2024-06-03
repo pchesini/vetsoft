@@ -84,7 +84,7 @@ def validate_provider(data):
     name = data.get("name", "")
     email = data.get("email", "")
     address = data.get("address", "")
-    
+
 
     if name == "":
         errors["name"] = "Por favor ingrese un nombre"
@@ -97,11 +97,19 @@ def validate_provider(data):
     if address == "":
         errors["address"] = "Por favor ingrese una dirección"
 
-    
+
     return errors
 
 
 class Client(models.Model):
+    """Representa un cliente con detalles de contacto personal.
+
+    Attributes:
+        name (str): El nombre del cliente.
+        phone (str): El número de teléfono del cliente.
+        email (str): La dirección de correo electrónico del cliente.
+        address (str): La dirección física del cliente.
+    """
     name = models.CharField(max_length=100)
     phone = models.CharField(max_length=15)
     email = models.EmailField()
@@ -136,6 +144,13 @@ class Client(models.Model):
 
 
 class Product(models.Model):
+    """Representa un producto disponible para la venta.
+
+    Attributes:
+        name (str): El nombre del producto.
+        type (str): El tipo o categoría del producto.
+        price (float): El precio del producto.
+    """
     name = models.CharField(max_length=100)
     type = models.CharField(max_length=100)
     price = models.FloatField()
@@ -166,17 +181,25 @@ class Product(models.Model):
         except ValueError:
         # Si el precio no es un valor numérico válido, retorna un mensaje de error
             return False, {"price": "Por favor ingrese un precio válido"}
-    
+
         if price <= 0:
         # Si el precio es menor o igual a cero, retorna un mensaje de error
             return False, {"price": "Por favor ingrese un precio mayor a cero"}
-    
+
         # Si no hay errores, actualiza el precio y guarda el objeto en la base de datos
         self.price = price
         self.save()
         return True, None
 
 class Vet(models.Model):
+    """Representa un veterinario con una especialidad específica.
+
+    Attributes:
+        name (str): El nombre del veterinario.
+        email (str): La dirección de correo electrónico del veterinario.
+        phone (str): El número de teléfono del veterinario.
+        specialty (str): La especialidad del veterinario.
+    """
     class VetSpecialties(models.TextChoices):
         SIN_ESPECIALIDAD="Sin especialidad", _("Sin especialidad")
         CARDIOLOGIA="Cardiología", _("Cardiología")
@@ -224,6 +247,13 @@ class Vet(models.Model):
 
 
 class Medi(models.Model):
+    """Representa una medicina.
+
+    Attributes:
+        name (str): El nombre de la medicina.
+        description (str): La descripción de la medicina.
+        dose (int): La dosis de la medicina.
+    """
     name = models.CharField(max_length=100)
     description = models.TextField()
     dose = models.IntegerField()
@@ -251,11 +281,12 @@ class Medi(models.Model):
         self.description = medi_data.get("description", "") or self.description
         self.dose = medi_data.get("dose", "") or self.dose
         self.save()
-    
- 
+
+
 
 
 class Provider(models.Model):
+    """Representa un proveedor."""
     name = models.CharField(max_length=100)
     email = models.EmailField()
     address = models.CharField(max_length=100, blank=True)
@@ -274,8 +305,8 @@ class Provider(models.Model):
         Provider.objects.create(
             name=provider_data.get("name"),
             email=provider_data.get("email"),
-            address=provider_data.get("address"), 
- 
+            address=provider_data.get("address"),
+
         )
 
         return True, None
@@ -283,6 +314,6 @@ class Provider(models.Model):
     def update_provider(self, provider_data):
         self.name = provider_data.get("name","") or self.name
         self.email = provider_data.get("email","") or self.email
-        self.address = provider_data.get("address","") or self.address 
-      
+        self.address = provider_data.get("address","") or self.address
+
         self.save()
