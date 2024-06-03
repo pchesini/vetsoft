@@ -283,14 +283,17 @@ class Medi(models.Model):
         self.save()
 
 
-
-
 class Provider(models.Model):
-    """Representa un proveedor."""
+    """Representa un proveedor.
+
+     Attributes:
+         name (str): El nombre del proveedor.
+         email (str): La dirección de correo electrónico del proveedor.
+         address (str, opcional): La dirección física del proveedor.
+    """
     name = models.CharField(max_length=100)
     email = models.EmailField()
     address = models.CharField(max_length=100, blank=True)
-
 
     def __str__(self):
         return self.name
