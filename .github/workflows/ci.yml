@@ -28,9 +28,15 @@ jobs:
 
             - name: Run unit and integration tests
               run: coverage run --source="./app" --omit="./app/migrations/**" manage.py test app
+              env:
+                DBENGINE : django.db.backends.sqlite3
+                DBNAME : db.sqlite3
 
             - name: Check coverage
               run: coverage report --fail-under=92
 
             - name: Run e2e tests
               run: python manage.py test functional_tests
+              env:
+                DBENGINE : django.db.backends.sqlite3
+                DBNAME : db.sqlite3
