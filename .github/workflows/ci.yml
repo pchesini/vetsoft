@@ -30,6 +30,7 @@ jobs:
               env:
                 DBENGINE : django.db.backends.sqlite3
                 DBNAME : db.sqlite3
+                CSRF_TRUSTED_ORIGINS: 'https://*'
 
             - name: Check coverage
               run: coverage report --fail-under=92
@@ -39,4 +40,5 @@ jobs:
               env:
                 DBENGINE : django.db.backends.sqlite3
                 DBNAME : db.sqlite3
+                CSRF_TRUSTED_ORIGINS: 'https://*'
 
