@@ -108,7 +108,7 @@ class Client(models.Model):
         validators=[
             RegexValidator(
                 regex=r'^\d+$',
-                message="El teléfono debe contener solo números y ser mayor a cero."
+                message="El teléfono debe contener solo números."
             )
         ])
     email = models.EmailField()
