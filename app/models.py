@@ -14,6 +14,11 @@ def validate_client(data):
 
     if phone == "":
         errors["phone"] = "Por favor ingrese un teléfono"
+    else:
+        try:
+            int(phone)
+        except ValueError:
+            errors["phone"] = "Por favor ingrese un teléfono válido"
 
     if email == "":
         errors["email"] = "Por favor ingrese un email"
