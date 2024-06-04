@@ -1,5 +1,6 @@
 from django.db import models
 from django.utils.translation import gettext_lazy as _
+from django.core.validators import RegexValidator
 
 def validate_client(data):
     errors = {}
@@ -13,6 +14,8 @@ def validate_client(data):
 
     if phone == "":
         errors["phone"] = "Por favor ingrese un teléfono"
+    elif not phone.isdigit():
+        errors["phone"] = "El teléfono debe contener solo números y ser mayor a cero."
 
     if email == "":
         errors["email"] = "Por favor ingrese un email"
@@ -103,7 +106,13 @@ def validate_provider(data):
 
 class Client(models.Model):
     name = models.CharField(max_length=100)
-    phone = models.CharField(max_length=15)
+    phone = models.BigIntegerField(
+        validators=[
+            RegexValidator(
+                regex=r'^\d+$',
+                message="El teléfono debe contener solo números y ser mayor a cero."
+            )
+        ])
     email = models.EmailField()
     address = models.CharField(max_length=100, blank=True)
 
