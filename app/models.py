@@ -18,6 +18,8 @@ def validate_client(data):
         errors["email"] = "Por favor ingrese un email"
     elif email.count("@") == 0:
         errors["email"] = "Por favor ingrese un email valido"
+    elif not email.endswith("@vetsoft.com"):
+        errors["email"] = "Por favor ingrese un email terminado en @vetsoft.com"
 
     return errors
 
@@ -84,7 +86,7 @@ def validate_provider(data):
     name = data.get("name", "")
     email = data.get("email", "")
     address = data.get("address", "")
-    
+
 
     if name == "":
         errors["name"] = "Por favor ingrese un nombre"
@@ -97,7 +99,7 @@ def validate_provider(data):
     if address == "":
         errors["address"] = "Por favor ingrese una dirección"
 
-    
+
     return errors
 
 
@@ -166,11 +168,11 @@ class Product(models.Model):
         except ValueError:
         # Si el precio no es un valor numérico válido, retorna un mensaje de error
             return False, {"price": "Por favor ingrese un precio válido"}
-    
+
         if price <= 0:
         # Si el precio es menor o igual a cero, retorna un mensaje de error
             return False, {"price": "Por favor ingrese un precio mayor a cero"}
-    
+
         # Si no hay errores, actualiza el precio y guarda el objeto en la base de datos
         self.price = price
         self.save()
@@ -251,8 +253,8 @@ class Medi(models.Model):
         self.description = medi_data.get("description", "") or self.description
         self.dose = medi_data.get("dose", "") or self.dose
         self.save()
-    
- 
+
+
 
 
 class Provider(models.Model):
@@ -274,8 +276,8 @@ class Provider(models.Model):
         Provider.objects.create(
             name=provider_data.get("name"),
             email=provider_data.get("email"),
-            address=provider_data.get("address"), 
- 
+            address=provider_data.get("address"),
+
         )
 
         return True, None
@@ -283,6 +285,6 @@ class Provider(models.Model):
     def update_provider(self, provider_data):
         self.name = provider_data.get("name","") or self.name
         self.email = provider_data.get("email","") or self.email
-        self.address = provider_data.get("address","") or self.address 
-      
+        self.address = provider_data.get("address","") or self.address
+
         self.save()
