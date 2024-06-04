@@ -14,8 +14,6 @@ def validate_client(data):
 
     if phone == "":
         errors["phone"] = "Por favor ingrese un teléfono"
-    elif not phone.isdigit():
-        errors["phone"] = "El teléfono debe contener solo números y ser mayor a cero."
 
     if email == "":
         errors["email"] = "Por favor ingrese un email"
