@@ -86,7 +86,7 @@ DATABASES = {
     "default": {
         "ENGINE": os.getenv("DBENGINE"),
         "NAME": BASE_DIR / os.getenv("DBNAME"),
-    }
+    },
 }
 
 
