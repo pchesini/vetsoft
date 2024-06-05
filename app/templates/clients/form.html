@@ -40,7 +40,7 @@
                     <input type="text"
                         id="phone"
                         name="phone"
-                        class="form-control"
+                        class="form-control {% if errors.phone %}is-invalid{% endif %}"
                         value="{{client.phone}}"
                         required/>
 

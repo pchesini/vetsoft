@@ -13,9 +13,9 @@ def validate_client(data):
 
     if phone == "":
         errors["phone"] = "Por favor ingrese un teléfono"
-    if not phone.startswith("54"):
-        errors["phone"] = "El teléfono debe comenzar con 54"
-
+    elif not phone.startswith("54"):
+        errors["phone"]="El teléfono debe comenzar con 54"
+    
 
     if email == "":
         errors["email"] = "Por favor ingrese un email"
@@ -24,6 +24,22 @@ def validate_client(data):
 
     return errors
 
+
+def validate_vet(data):
+    errors = {}
+
+    name = data.get("name", "")
+    phone = data.get("phone", "")
+    email = data.get("email", "")
+    if name == "":
+        errors["name"] = "Por favor ingrese un nombre"
+    if phone == "":
+        errors["phone"] = "Por favor ingrese un teléfono"
+    if email == "":
+        errors["email"] = "Por favor ingrese un email"
+    elif email.count("@") == 0:
+        errors["email"] = "Por favor ingrese un email valido"
+    return errors
 
 def validate_medicine(data):
         errors = {}
@@ -204,7 +220,7 @@ class Vet(models.Model):
 
     @classmethod
     def save_vet(cls, vet_data):
-        errors = validate_client(vet_data)
+        errors = validate_vet(vet_data)
 
         if len(errors.keys()) > 0:
             return False, errors
