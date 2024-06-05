@@ -13,8 +13,8 @@ class ClientModelTest(TestCase):
                 "name": "Juan Sebastian Veron",
                 "phone": "221555232",
                 "address": "13 y 44",
-                "email": "brujita75@hotmail.com",
-            },
+                "email": "brujita75@vetsoft.com",
+            }
         )
         clients = Client.objects.all()
         self.assertEqual(len(clients), 1)
@@ -22,7 +22,7 @@ class ClientModelTest(TestCase):
         self.assertEqual(clients[0].name, "Juan Sebastian Veron")
         self.assertEqual(clients[0].phone, "221555232")
         self.assertEqual(clients[0].address, "13 y 44")
-        self.assertEqual(clients[0].email, "brujita75@hotmail.com")
+        self.assertEqual(clients[0].email, "brujita75@vetsoft.com")
 
     def test_can_update_client(self):
         """Verifica si se puede actualizar un cliente."""
@@ -32,8 +32,8 @@ class ClientModelTest(TestCase):
                 "name": "Juan Sebastian Veron",
                 "phone": "221555232",
                 "address": "13 y 44",
-                "email": "brujita75@hotmail.com",
-            },
+                "email": "brujita75@vetsoft.com",
+            }
         )
         client = Client.objects.get(pk=1)
 
@@ -53,8 +53,8 @@ class ClientModelTest(TestCase):
                 "name": "Juan Sebastian Veron",
                 "phone": "221555232",
                 "address": "13 y 44",
-                "email": "brujita75@hotmail.com",
-            },
+                "email": "brujita75@vetsoft.com",
+            }
         )
         client = Client.objects.get(pk=1)
 
@@ -66,6 +66,21 @@ class ClientModelTest(TestCase):
 
         self.assertEqual(client_updated.phone, "221555232")
 
+    def test_can_not_create_with_invalid_email(self):
+
+        Client.save_client(
+            {
+                "name": "Juan Sebastian Veron",
+                "phone": "221555232",
+                "address": "13 y 44",
+                "email": "brujita75@yahoo.com",
+            }
+        )
+        clients = Client.objects.all()
+        self.assertNotEqual(len(clients), 1)
+
+
+
 class MedicineModelTest(TestCase):
     """Pruebas para el modelo Medi (Medicine)."""
     def test_can_create_and_get_medicine(self):
@@ -75,7 +90,7 @@ class MedicineModelTest(TestCase):
             {
                 "name": "Paracetamol",
                 "description": "Analgesico",
-                "dose": "5",  
+                "dose": "5",
             },
         )
         medicines = Medi.objects.all()
@@ -84,7 +99,7 @@ class MedicineModelTest(TestCase):
         self.assertEqual(medicines[0].name, "Paracetamol")
         self.assertEqual(medicines[0].description, "Analgesico")
         self.assertEqual(medicines[0].dose, 5)
-    
+
     def test_can_update_medicine(self):
         """Verifica si se puede actualizar un medicamento."""
 
@@ -92,7 +107,7 @@ class MedicineModelTest(TestCase):
             {
                 "name": "Paracetamol",
                 "description": "Analgesico",
-                "dose": "5",  
+                "dose": "5",
             },
         )
         medicine = Medi.objects.get(pk=1)
@@ -112,7 +127,7 @@ class MedicineModelTest(TestCase):
             {
                 "name": "Paracetamol",
                 "description": "Analgesico",
-                "dose": "5", 
+                "dose": "5",
             },
         )
         medicine = Medi.objects.get(pk=1)
