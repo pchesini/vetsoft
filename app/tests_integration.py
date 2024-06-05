@@ -29,7 +29,7 @@ class ClientsTest(TestCase):
                 "name": "Juan Sebastian Veron",
                 "phone": "221555232",
                 "address": "13 y 44",
-                "email": "brujita75@hotmail.com",
+                "email": "brujita75@vetsoft.com",
             },
         )
         clients = Client.objects.all()
@@ -38,7 +38,7 @@ class ClientsTest(TestCase):
         self.assertEqual(clients[0].name, "Juan Sebastian Veron")
         self.assertEqual(clients[0].phone, "221555232")
         self.assertEqual(clients[0].address, "13 y 44")
-        self.assertEqual(clients[0].email, "brujita75@hotmail.com")
+        self.assertEqual(clients[0].email, "brujita75@vetsoft.com")
 
         self.assertRedirects(response, reverse("clients_repo"))
 
@@ -96,7 +96,7 @@ class ClientsTest(TestCase):
 
 ###TEST MEDICINE###
 class MedicineTest(TestCase):
-    
+
     def test_validation_invalid_dose_below_range(self):
         # Enviamos una solicitud POST al formulario de creación de medicamentos con una dosis inválida (fuera del rango permitido, menor que 1)
         response = self.client.post(

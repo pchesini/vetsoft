@@ -9,7 +9,7 @@ class ClientModelTest(TestCase):
                 "name": "Juan Sebastian Veron",
                 "phone": "221555232",
                 "address": "13 y 44",
-                "email": "brujita75@hotmail.com",
+                "email": "brujita75@vetsoft.com",
             }
         )
         clients = Client.objects.all()
@@ -18,7 +18,7 @@ class ClientModelTest(TestCase):
         self.assertEqual(clients[0].name, "Juan Sebastian Veron")
         self.assertEqual(clients[0].phone, "221555232")
         self.assertEqual(clients[0].address, "13 y 44")
-        self.assertEqual(clients[0].email, "brujita75@hotmail.com")
+        self.assertEqual(clients[0].email, "brujita75@vetsoft.com")
 
     def test_can_update_client(self):
         Client.save_client(
@@ -26,7 +26,7 @@ class ClientModelTest(TestCase):
                 "name": "Juan Sebastian Veron",
                 "phone": "221555232",
                 "address": "13 y 44",
-                "email": "brujita75@hotmail.com",
+                "email": "brujita75@vetsoft.com",
             }
         )
         client = Client.objects.get(pk=1)
@@ -45,7 +45,7 @@ class ClientModelTest(TestCase):
                 "name": "Juan Sebastian Veron",
                 "phone": "221555232",
                 "address": "13 y 44",
-                "email": "brujita75@hotmail.com",
+                "email": "brujita75@vetsoft.com",
             }
         )
         client = Client.objects.get(pk=1)
@@ -65,7 +65,7 @@ class MedicineModelTest(TestCase):
             {
                 "name": "Paracetamol",
                 "description": "Analgesico",
-                "dose": "5",  
+                "dose": "5",
             }
         )
         medicines = Medi.objects.all()
@@ -74,14 +74,14 @@ class MedicineModelTest(TestCase):
         self.assertEqual(medicines[0].name, "Paracetamol")
         self.assertEqual(medicines[0].description, "Analgesico")
         self.assertEqual(medicines[0].dose, 5)
-    
-    #Esta prueba comprueba si se puede actualizar la dosis de un medicamento 
+
+    #Esta prueba comprueba si se puede actualizar la dosis de un medicamento
     def test_can_update_medicine(self):
         Medi.save_medi(
             {
                 "name": "Paracetamol",
                 "description": "Analgesico",
-                "dose": "5",  
+                "dose": "5",
             }
         )
         medicine = Medi.objects.get(pk=1)
@@ -99,7 +99,7 @@ class MedicineModelTest(TestCase):
             {
                 "name": "Paracetamol",
                 "description": "Analgesico",
-                "dose": "5", 
+                "dose": "5",
             }
         )
         medicine = Medi.objects.get(pk=1)
