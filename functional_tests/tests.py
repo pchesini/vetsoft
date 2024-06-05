@@ -691,7 +691,7 @@ class VetRepoTestCase(PlaywrightTestCase):
         expect(self.page.get_by_text("Mariano Navone")).not_to_be_visible()
 
 class VetCreateEditTestCase(PlaywrightTestCase):
-    
+
     def test_should_be_able_to_create_a_new_vet(self):
         """
         Prueba que un nuevo veterinario pueda ser creado.

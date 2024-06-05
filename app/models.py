@@ -255,7 +255,7 @@ class Vet(models.Model):
     @classmethod
     def save_vet(cls, vet_data):
         """"Guarda un nuevo veterinario en la base de datos"""
-        errors = validate_client(vet_data)
+        errors = validate_vet(vet_data)
 
         if len(errors.keys()) > 0:
             return False, errors
