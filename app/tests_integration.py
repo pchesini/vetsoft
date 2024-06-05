@@ -175,7 +175,7 @@ class VetsTest(TestCase):
                 "name": "Mariano Navone",
                 "phone": "2219870789",
                 "email": "lanavoneta@gmail.com",
-                "specialty": Vet.VetSpecialties.ONCOLOGIA
+                "specialty": Vet.VetSpecialties.ONCOLOGIA,
             },
         )
 

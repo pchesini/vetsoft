@@ -200,7 +200,7 @@ class Vet(models.Model):
     specialty = models.CharField(
         max_length=100,
         choices=VetSpecialties,
-        default=VetSpecialties.SIN_ESPECIALIDAD
+        default=VetSpecialties.SIN_ESPECIALIDAD, # se agrego la coma faltante detectada con ruff
     )
 
     def __str__(self):
