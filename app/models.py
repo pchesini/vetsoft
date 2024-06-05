@@ -49,21 +49,6 @@ def validate_vet(data):
     return errors
 
 
-def validate_vet(data):
-    errors = {}
-
-    name = data.get("name", "")
-    phone = data.get("phone", "")
-    email = data.get("email", "")
-    if name == "":
-        errors["name"] = "Por favor ingrese un nombre"
-    if phone == "":
-        errors["phone"] = "Por favor ingrese un teléfono"
-    if email == "":
-        errors["email"] = "Por favor ingrese un email"
-    elif email.count("@") == 0:
-        errors["email"] = "Por favor ingrese un email valido"
-    return errors
 
 def validate_medicine(data):
         errors = {}
