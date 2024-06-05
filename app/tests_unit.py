@@ -13,7 +13,7 @@ class ClientModelTest(TestCase):
                 "phone": "221555232",
                 "address": "13 y 44",
                 "email": "brujita75@hotmail.com",
-            }
+            },
         )
         clients = Client.objects.all()
         self.assertEqual(len(clients), 1)
@@ -32,7 +32,7 @@ class ClientModelTest(TestCase):
                 "phone": "221555232",
                 "address": "13 y 44",
                 "email": "brujita75@hotmail.com",
-            }
+            },
         )
         client = Client.objects.get(pk=1)
 
@@ -53,7 +53,7 @@ class ClientModelTest(TestCase):
                 "phone": "221555232",
                 "address": "13 y 44",
                 "email": "brujita75@hotmail.com",
-            }
+            },
         )
         client = Client.objects.get(pk=1)
 
@@ -75,7 +75,7 @@ class MedicineModelTest(TestCase):
                 "name": "Paracetamol",
                 "description": "Analgesico",
                 "dose": "5",  
-            }
+            },
         )
         medicines = Medi.objects.all()
         self.assertEqual(len(medicines), 1)
@@ -92,7 +92,7 @@ class MedicineModelTest(TestCase):
                 "name": "Paracetamol",
                 "description": "Analgesico",
                 "dose": "5",  
-            }
+            },
         )
         medicine = Medi.objects.get(pk=1)
 
@@ -112,7 +112,7 @@ class MedicineModelTest(TestCase):
                 "name": "Paracetamol",
                 "description": "Analgesico",
                 "dose": "5", 
-            }
+            },
         )
         medicine = Medi.objects.get(pk=1)
 
@@ -136,8 +136,8 @@ class VetModelTest(TestCase):
                 "name": "Mariano Navone",
                 "phone": "2219870789",
                 "email": "lanavoneta@gmail.com",
-                "specialty": Vet.VetSpecialties.SIN_ESPECIALIDAD
-            }
+                "specialty": Vet.VetSpecialties.SIN_ESPECIALIDAD,
+            },
         )
         vets = Vet.objects.all()
         self.assertEqual(len(vets), 1)
@@ -155,8 +155,8 @@ class VetModelTest(TestCase):
                 "name": "Mariano Navone",
                 "phone": "2219870789",
                 "email": "lanavoneta@gmail.com",
-                "specialty": Vet.VetSpecialties.SIN_ESPECIALIDAD
-            }
+                "specialty": Vet.VetSpecialties.SIN_ESPECIALIDAD,
+            },
         )
         vet = Vet.objects.get(pk=1)
 
@@ -194,7 +194,7 @@ class ProductModelTest(TestCase):
                 "name": "Producto 1",
                 "type": "Alimento",
                 "price": 100.0,
-            }
+            },
         )
         products = Product.objects.all()
         self.assertEqual(len(products), 1)
@@ -211,7 +211,7 @@ class ProductModelTest(TestCase):
                 "name": "Producto 1",
                 "type": "Alimento",
                 "price": 100.0,
-            }
+            },
         )
 
         product = Product.objects.get(pk=1)
@@ -232,7 +232,7 @@ class ProductModelTest(TestCase):
                 "name": "Producto 1",
                 "type": "Alimento",
                 "price": 100.0,
-            }
+            },
         )
         product = Product.objects.get(pk=1)
 
@@ -252,7 +252,7 @@ class ProductModelTest(TestCase):
                 "name": "Producto 1",
                 "type": "Alimento",
                 "price": 100.0,
-            }
+            },
         )
         product = Product.objects.get(pk=1)
 
@@ -272,7 +272,7 @@ class ProductModelTest(TestCase):
                 "name": "Producto 1",
                 "type": "Alimento",
                 "price": 100.0,
-            }
+            },
         )
         product = Product.objects.get(pk=1)
 
