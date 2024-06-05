@@ -1,7 +1,15 @@
 from django.db import models
-from django.utils.translation import gettext_lazy as _
 
 def validate_client(data):
+    """
+    Validate client data.
+
+    Args:
+    - data (dict): Dictionary containing client data.
+
+    Returns:
+    - dict: Dictionary containing errors, if any.
+    """
     errors = {}
 
     name = data.get("name", "")
@@ -23,31 +31,49 @@ def validate_client(data):
 
 
 def validate_medicine(data):
-        errors = {}
+    """
+    Validate medicine data.
 
-        name = data.get("name", "")
-        description = data.get("description", "")
-        dose = data.get("dose", "")
+    Args:
+    - data (dict): Dictionary containing medicine data.
 
-        if name == "":
-            errors["name"] = "Por favor ingrese un nombre"
+    Returns:
+    - dict: Dictionary containing errors, if any.
+    """
+    errors = {}
 
-        if description == "":
-            errors["description"] = "Por favor ingrese una descripcion"
+    name = data.get("name", "")
+    description = data.get("description", "")
+    dose = data.get("dose", "")
 
-        if dose == "":
-            errors["dose"] = "Por favor ingrese una dosis"
-        else:
-            try:
-                dose_value = int(dose)
-                if dose_value < 1 or dose_value > 10:
-                    errors["dose"] = "Por favor ingrese una dosis entre 1 y 10"
-            except ValueError:
-             errors["dose"] = "La dosis debe ser un número entero"
+    if name == "":
+        errors["name"] = "Por favor ingrese un nombre"
 
-        return errors
+    if description == "":
+        errors["description"] = "Por favor ingrese una descripcion"
+
+    if dose == "":
+        errors["dose"] = "Por favor ingrese una dosis"
+    else:
+        try:
+            dose_value = int(dose)
+            if dose_value < 1 or dose_value > 10:
+                errors["dose"] = "Por favor ingrese una dosis entre 1 y 10"
+        except ValueError:
+            errors["dose"] = "La dosis debe ser un número entero"
+
+    return errors
 
 def validate_product(data):
+    """
+    Validate product data.
+
+    Args:
+    - data (dict): Dictionary containing product data.
+
+    Returns:
+    - dict: Dictionary containing errors, if any.
+    """
     errors = {}
 
     name = data.get("name", "")
@@ -60,11 +86,6 @@ def validate_product(data):
     if type == "":
         errors["type"] = "Por favor ingrese un tipo"
 
-    '''if price == "":
-        errors["price"] = "Por favor ingrese un precio"
-    elif float(price) <= 0:
-        errors["price"] = "Por favor ingrese un precio mayor a cero"
-    '''
     if price == "":
         errors["price"] = "Por favor ingrese un precio"
     else:
@@ -79,12 +100,20 @@ def validate_product(data):
 
 
 def validate_provider(data):
+    """
+    Validate provider data.
+
+    Args:
+    - data (dict): Dictionary containing provider data.
+
+    Returns:
+    - dict: Dictionary containing errors, if any.
+    """
     errors = {}
 
     name = data.get("name", "")
     email = data.get("email", "")
     address = data.get("address", "")
-    
 
     if name == "":
         errors["name"] = "Por favor ingrese un nombre"
@@ -97,11 +126,19 @@ def validate_provider(data):
     if address == "":
         errors["address"] = "Por favor ingrese una dirección"
 
-    
     return errors
 
 
 class Client(models.Model):
+    """
+    Model representing a client.
+
+    Attributes:
+    - name (str): The name of the client.
+    - phone (str): The phone number of the client.
+    - email (str): The email address of the client.
+    - address (str, optional): The address of the client.
+    """
     name = models.CharField(max_length=100)
     phone = models.CharField(max_length=15)
     email = models.EmailField()
@@ -112,6 +149,15 @@ class Client(models.Model):
 
     @classmethod
     def save_client(cls, client_data):
+        """
+        Save a new client.
+
+        Args:
+        - client_data (dict): Dictionary containing client data.
+
+        Returns:
+        - tuple: A tuple containing a boolean indicating success and any errors, if any.
+        """
         errors = validate_client(client_data)
 
         if len(errors.keys()) > 0:
@@ -127,162 +173,16 @@ class Client(models.Model):
         return True, None
 
     def update_client(self, client_data):
+        """
+        Update an existing client.
+
+        Args:
+        - client_data (dict): Dictionary containing client data to update.
+
+        Returns:
+        - None
+        """
         self.name = client_data.get("name", "") or self.name
         self.email = client_data.get("email", "") or self.email
         self.phone = client_data.get("phone", "") or self.phone
-        self.address = client_data.get("address", "") or self.address
-
-        self.save()
-
-
-class Product(models.Model):
-    name = models.CharField(max_length=100)
-    type = models.CharField(max_length=100)
-    price = models.FloatField()
-
-    def __str__(self):
-        return self.name
-
-    @classmethod
-    def save_product(cls, product_data):
-        errors = validate_product(product_data)
-
-        if len(errors.keys()) > 0:
-            return False, errors
-
-        Product.objects.create(
-            name=product_data.get("name"),
-            type=product_data.get("type"),
-            price=product_data.get("price"),
-        )
-
-        return True, None
-
-    def update_product(self, product_data):
-        self.name = product_data.get("name", "") or self.name
-        self.type = product_data.get("type", "") or self.type
-        try:
-            price = float(product_data.get("price", ""))
-        except ValueError:
-        # Si el precio no es un valor numérico válido, retorna un mensaje de error
-            return False, {"price": "Por favor ingrese un precio válido"}
-    
-        if price <= 0:
-        # Si el precio es menor o igual a cero, retorna un mensaje de error
-            return False, {"price": "Por favor ingrese un precio mayor a cero"}
-    
-        # Si no hay errores, actualiza el precio y guarda el objeto en la base de datos
-        self.price = price
-        self.save()
-        return True, None
-
-class Vet(models.Model):
-    class VetSpecialties(models.TextChoices):
-        SIN_ESPECIALIDAD="Sin especialidad", _("Sin especialidad")
-        CARDIOLOGIA="Cardiología", _("Cardiología")
-        MEDICINA_INTERNA_PEQUENOS_ANIMALES="Medicina interna de pequeños animales", _("Medicina interna de pequeños animales")
-        MEDICINA_INTERNA_GRANDES_ANIMALES="Medicina interna de grandes animales", _("Medicina interna de grandes animales")
-        NEUROLOGIA="Neurología", _("Neurología")
-        ONCOLOGIA="Oncología", _("Oncología")
-        NUTRICION="Nutrición", _("Nutrición")
-
-
-    name = models.CharField(max_length=100)
-    email = models.EmailField()
-    phone = models.CharField(max_length=15)
-    specialty = models.CharField(
-        max_length=100,
-        choices=VetSpecialties,
-        default=VetSpecialties.SIN_ESPECIALIDAD
-    )
-
-    def __str__(self):
-        return self.name
-
-    @classmethod
-    def save_vet(cls, vet_data):
-        errors = validate_client(vet_data)
-
-        if len(errors.keys()) > 0:
-            return False, errors
-
-        Vet.objects.create(
-            name=vet_data.get("name"),
-            phone=vet_data.get("phone"),
-            email=vet_data.get("email"),
-            specialty=vet_data.get("specialty"),
-        )
-
-        return True, None
-
-    def update_vet(self, vet_data):
-        self.name = vet_data.get("name", "") or self.name
-        self.email = vet_data.get("email", "") or self.email
-        self.phone = vet_data.get("phone", "") or self.phone
-        self.specialty = vet_data.get("specialty", "") or self.specialty
-        self.save()
-
-
-class Medi(models.Model):
-    name = models.CharField(max_length=100)
-    description = models.TextField()
-    dose = models.IntegerField()
-
-    def __str__(self):
-        return self.name
-
-    @classmethod
-    def save_medi(cls, medi_data):
-        errors = validate_medicine(medi_data)
-
-        if len(errors.keys()) > 0:
-            return False, errors
-
-        Medi.objects.create(
-            name=medi_data.get("name"),
-            description=medi_data.get("description"),
-            dose=medi_data.get("dose"),
-        )
-
-        return True, None
-
-    def update_medi(self, medi_data):
-        self.name = medi_data.get("name", "") or self.name
-        self.description = medi_data.get("description", "") or self.description
-        self.dose = medi_data.get("dose", "") or self.dose
-        self.save()
-    
- 
-
-
-class Provider(models.Model):
-    name = models.CharField(max_length=100)
-    email = models.EmailField()
-    address = models.CharField(max_length=100, blank=True)
-
-
-    def __str__(self):
-        return self.name
-
-    @classmethod
-    def save_provider(cls, provider_data):
-        errors = validate_provider(provider_data)
-
-        if len(errors.keys()) > 0:
-            return False, errors
-
-        Provider.objects.create(
-            name=provider_data.get("name"),
-            email=provider_data.get("email"),
-            address=provider_data.get("address"), 
- 
-        )
-
-        return True, None
-
-    def update_provider(self, provider_data):
-        self.name = provider_data.get("name","") or self.name
-        self.email = provider_data.get("email","") or self.email
-        self.address = provider_data.get("address","") or self.address 
-      
-        self.save()
+        self.address
