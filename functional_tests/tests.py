@@ -201,7 +201,8 @@ class ClientCreateEditTestCase(PlaywrightTestCase):
         expect(self.page.get_by_text("Por favor ingrese un teléfono")).to_be_visible()
         expect(self.page.get_by_text("Por favor ingrese un email")).to_be_visible()
 
-        self.page.get_by_label("Nombre").fill("Juan Sebastian Veron")
+       # Prueba agregar un nombre inválido
+        self.page.get_by_label("Nombre").fill("12345")  # Nombre inválido que no contiene solo letras y espacios
         self.page.get_by_label("Teléfono").fill("221555232")
         self.page.get_by_label("Email").fill("brujita75")
         self.page.get_by_label("Dirección").fill("13 y 44")
