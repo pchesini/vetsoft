@@ -58,6 +58,21 @@ class ClientModelTest(TestCase):
 
         self.assertEqual(client_updated.phone, "221555232")
 
+    def test_can_not_create_with_invalid_email(self):
+
+        Client.save_client(
+            {
+                "name": "Juan Sebastian Veron",
+                "phone": "221555232",
+                "address": "13 y 44",
+                "email": "brujita75@yahoo.com",
+            }
+        )
+        clients = Client.objects.all()
+        self.assertNotEqual(len(clients), 1)
+
+
+
 class MedicineModelTest(TestCase):
     #verifica si se puede crear un nuevo medicamento y si se guarda en la bd
     def test_can_create_and_get_medicine(self):

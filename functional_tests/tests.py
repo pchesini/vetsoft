@@ -79,14 +79,14 @@ class ClientsRepoTestCase(PlaywrightTestCase):
             name="Juan Sebastián Veron",
             address="13 y 44",
             phone="221555232",
-            email="brujita75@hotmail.com",
+            email="brujita75@vetsoft.com",
         )
 
         Client.objects.create(
             name="Guido Carrillo",
             address="1 y 57",
             phone="221232555",
-            email="goleador@gmail.com",
+            email="goleador@vetsoft.com",
         )
 
         self.page.goto(f"{self.live_server_url}{reverse('clients_repo')}")
@@ -96,12 +96,12 @@ class ClientsRepoTestCase(PlaywrightTestCase):
         expect(self.page.get_by_text("Juan Sebastián Veron")).to_be_visible()
         expect(self.page.get_by_text("13 y 44")).to_be_visible()
         expect(self.page.get_by_text("221555232")).to_be_visible()
-        expect(self.page.get_by_text("brujita75@hotmail.com")).to_be_visible()
+        expect(self.page.get_by_text("brujita75@vetsoft.com")).to_be_visible()
 
         expect(self.page.get_by_text("Guido Carrillo")).to_be_visible()
         expect(self.page.get_by_text("1 y 57")).to_be_visible()
         expect(self.page.get_by_text("221232555")).to_be_visible()
-        expect(self.page.get_by_text("goleador@gmail.com")).to_be_visible()
+        expect(self.page.get_by_text("goleador@vetsoft.com")).to_be_visible()
 
     def test_should_show_add_client_action(self):
         self.page.goto(f"{self.live_server_url}{reverse('clients_repo')}")
@@ -116,7 +116,7 @@ class ClientsRepoTestCase(PlaywrightTestCase):
             name="Juan Sebastián Veron",
             address="13 y 44",
             phone="221555232",
-            email="brujita75@hotmail.com",
+            email="brujita75@vetsoft.com",
         )
 
         self.page.goto(f"{self.live_server_url}{reverse('clients_repo')}")
@@ -131,7 +131,7 @@ class ClientsRepoTestCase(PlaywrightTestCase):
             name="Juan Sebastián Veron",
             address="13 y 44",
             phone="221555232",
-            email="brujita75@hotmail.com",
+            email="brujita75@vetsoft.com",
         )
 
         self.page.goto(f"{self.live_server_url}{reverse('clients_repo')}")
@@ -152,7 +152,7 @@ class ClientsRepoTestCase(PlaywrightTestCase):
             name="Juan Sebastián Veron",
             address="13 y 44",
             phone="221555232",
-            email="brujita75@hotmail.com",
+            email="brujita75@vetsoft.com",
         )
 
         self.page.goto(f"{self.live_server_url}{reverse('clients_repo')}")
@@ -215,6 +215,20 @@ class ClientCreateEditTestCase(PlaywrightTestCase):
 
         expect(
             self.page.get_by_text("Por favor ingrese un email valido")
+        ).to_be_visible()
+
+
+
+    def test_should_view_errors_if_email_does_not_end_correctly(self):
+
+        self.page.goto(f"{self.live_server_url}{reverse('clients_form')}")
+
+        self.page.get_by_label("Email").fill("brujita75@yahoo.com")
+
+        self.page.get_by_role("button", name="Guardar").click()
+
+        expect(
+            self.page.get_by_text("Por favor ingrese un email terminado en @vetsoft.com")
         ).to_be_visible()
 
     def test_should_be_able_to_edit_a_client(self):
