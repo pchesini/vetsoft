@@ -10,6 +10,21 @@ class HomePageTest(TestCase):
 
 
 class ClientsTest(TestCase):
+    def test_validation_errors_create_client(self):
+        response = self.client.post(
+            reverse("clients_form"),
+            data={
+                "name": "",  # Campo name vacío para provocar un error de validación
+                "phone": "221555232",
+                "address": "13 y 44",
+                "email": "brujita75@hotmail.com",
+        },
+    )
+
+        self.assertContains(response, "Por favor ingrese un nombre")
+        self.assertContains(response, "Por favor ingrese un teléfono")
+        self.assertContains(response, "Por favor ingrese un email")
+    
     def test_repo_use_repo_template(self):
         response = self.client.get(reverse("clients_repo"))
         self.assertTemplateUsed(response, "clients/repository.html")
