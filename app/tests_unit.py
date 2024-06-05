@@ -3,7 +3,10 @@ from app.models import Product, Client, Vet, Provider, Medi
 
 
 class ClientModelTest(TestCase):
+    """Pruebas para el modelo Client."""
+
     def test_can_create_and_get_client(self):
+        """Verifica si se puede crear y obtener un cliente."""
         Client.save_client(
             {
                 "name": "Juan Sebastian Veron",
@@ -21,6 +24,8 @@ class ClientModelTest(TestCase):
         self.assertEqual(clients[0].email, "brujita75@hotmail.com")
 
     def test_can_update_client(self):
+        """Verifica si se puede actualizar un cliente."""
+
         Client.save_client(
             {
                 "name": "Juan Sebastian Veron",
@@ -40,6 +45,8 @@ class ClientModelTest(TestCase):
         self.assertEqual(client_updated.phone, "221555233")
 
     def test_update_client_with_error(self):
+        """Verifica si se puede actualizar un cliente con un error."""
+
         Client.save_client(
             {
                 "name": "Juan Sebastian Veron",
@@ -59,8 +66,10 @@ class ClientModelTest(TestCase):
         self.assertEqual(client_updated.phone, "221555232")
 
 class MedicineModelTest(TestCase):
-    #verifica si se puede crear un nuevo medicamento y si se guarda en la bd
+    """Pruebas para el modelo Medi (Medicine)."""
     def test_can_create_and_get_medicine(self):
+        """Verifica si se puede crear y obtener un medicamento."""
+
         Medi.save_medi(
             {
                 "name": "Paracetamol",
@@ -75,8 +84,9 @@ class MedicineModelTest(TestCase):
         self.assertEqual(medicines[0].description, "Analgesico")
         self.assertEqual(medicines[0].dose, 5)
     
-    #Esta prueba comprueba si se puede actualizar la dosis de un medicamento 
     def test_can_update_medicine(self):
+        """Verifica si se puede actualizar un medicamento."""
+
         Medi.save_medi(
             {
                 "name": "Paracetamol",
@@ -95,6 +105,8 @@ class MedicineModelTest(TestCase):
         self.assertEqual(medicine_updated.dose, 9)
 
     def test_update_medicine_with_error(self):
+        """Verifica si se puede actualizar un medicamento con un error."""
+
         Medi.save_medi(
             {
                 "name": "Paracetamol",
@@ -114,8 +126,11 @@ class MedicineModelTest(TestCase):
         self.assertEqual(medicine_updated.dose, 5, "La dosis no debe cambiar si se proporciona un valor de dosis inválido")
 
 class VetModelTest(TestCase):
+    """Pruebas para el modelo Vet."""
 
     def test_can_create_and_get_vet(self):
+        """Verifica si se puede crear y obtener un veterinario."""
+
         Vet.save_vet(
             {
                 "name": "Mariano Navone",
@@ -133,6 +148,8 @@ class VetModelTest(TestCase):
         self.assertEqual(vets[0].specialty, Vet.VetSpecialties.SIN_ESPECIALIDAD)
 
     def test_can_update_vet_specialty(self):
+        """Verifica si se puede actualizar la especialidad de un veterinario."""
+
         Vet.save_vet(
             {
                 "name": "Mariano Navone",
@@ -152,6 +169,8 @@ class VetModelTest(TestCase):
         self.assertEqual(vet_updated.specialty, Vet.VetSpecialties.CARDIOLOGIA)
 
     def test_specialty_choices(self):
+        """Verifica las opciones de especialidad disponibles."""
+
         expected_choices = [
             ("Sin especialidad", "Sin especialidad"),
             ("Cardiología", "Cardiología"),
@@ -165,7 +184,11 @@ class VetModelTest(TestCase):
         self.assertEqual(Vet.VetSpecialties.choices, expected_choices)
 
 class ProductModelTest(TestCase):
+    """Pruebas para el modelo Product."""
+
     def test_can_create_and_get_product(self):
+        """Verifica si se puede crear y obtener un producto."""
+
         Product.save_product(
             {
                 "name": "Producto 1",
@@ -181,6 +204,8 @@ class ProductModelTest(TestCase):
         self.assertEqual(products[0].price, 100.0)
 
     def test_can_update_product(self):
+        """Verifica si se puede actualizar un producto."""
+
         Product.save_product(
             {
                 "name": "Producto 1",
@@ -200,6 +225,8 @@ class ProductModelTest(TestCase):
         self.assertEqual(product_updated.price, 200.0)
 
     def test_update_product_with_empty_price(self):
+        """Verifica si se puede actualizar un producto con un precio vacío."""
+
         Product.save_product(
             {
                 "name": "Producto 1",
@@ -218,6 +245,8 @@ class ProductModelTest(TestCase):
         self.assertEqual(product_updated.price, 100.0)
 
     def test_update_product_with_negative_price(self):
+        """Verifica si se puede actualizar un producto con un precio negativo."""
+
         Product.save_product(
             {
                 "name": "Producto 1",
@@ -236,6 +265,8 @@ class ProductModelTest(TestCase):
         self.assertEqual(product_updated.price, 100.0)
 
     def test_update_product_with_price_zero(self):
+        """Verifica si se puede actualizar un producto con un precio de cero."""
+
         Product.save_product(
             {
                 "name": "Producto 1",
@@ -256,7 +287,11 @@ class ProductModelTest(TestCase):
 
 
 class ProviderModelTest(TestCase):
+    """Pruebas para el modelo Provider."""
+
     def test_can_create_and_get_provider(self):
+        """Verifica si se puede crear y obtener un proveedor."""
+
         Provider.objects.create(
             name="Proveedor Ejemplo",
             email="proveedor@ejemplo.com",

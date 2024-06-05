@@ -2,6 +2,7 @@ from django.db import models
 from django.utils.translation import gettext_lazy as _
 
 def validate_client(data):
+
     errors = {}
 
     name = data.get("name", "")
@@ -112,6 +113,9 @@ class Client(models.Model):
 
     @classmethod
     def save_client(cls, client_data):
+        """
+        Guarda un nuevo cliente en la base de datos.
+        """
         errors = validate_client(client_data)
 
         if len(errors.keys()) > 0:
@@ -127,6 +131,7 @@ class Client(models.Model):
         return True, None
 
     def update_client(self, client_data):
+        """Actualizar datos de un cliente"""
         self.name = client_data.get("name", "") or self.name
         self.email = client_data.get("email", "") or self.email
         self.phone = client_data.get("phone", "") or self.phone
@@ -145,6 +150,7 @@ class Product(models.Model):
 
     @classmethod
     def save_product(cls, product_data):
+        """Guarda un nuevo producto en la base de datos"""
         errors = validate_product(product_data)
 
         if len(errors.keys()) > 0:
@@ -159,6 +165,7 @@ class Product(models.Model):
         return True, None
 
     def update_product(self, product_data):
+        """Actualiza los datos de un producto"""
         self.name = product_data.get("name", "") or self.name
         self.type = product_data.get("type", "") or self.type
         try:
@@ -201,6 +208,7 @@ class Vet(models.Model):
 
     @classmethod
     def save_vet(cls, vet_data):
+        """"Guarda un nuevo veterinario en la base de datos"""
         errors = validate_client(vet_data)
 
         if len(errors.keys()) > 0:
@@ -216,6 +224,7 @@ class Vet(models.Model):
         return True, None
 
     def update_vet(self, vet_data):
+        """Actualiza los datos de un veterinario"""
         self.name = vet_data.get("name", "") or self.name
         self.email = vet_data.get("email", "") or self.email
         self.phone = vet_data.get("phone", "") or self.phone
@@ -233,6 +242,7 @@ class Medi(models.Model):
 
     @classmethod
     def save_medi(cls, medi_data):
+        """"Guarda un nuevo medicamento en la base de datos"""
         errors = validate_medicine(medi_data)
 
         if len(errors.keys()) > 0:
@@ -247,6 +257,7 @@ class Medi(models.Model):
         return True, None
 
     def update_medi(self, medi_data):
+        """Actualiza los datos de un medicamento"""
         self.name = medi_data.get("name", "") or self.name
         self.description = medi_data.get("description", "") or self.description
         self.dose = medi_data.get("dose", "") or self.dose
@@ -266,6 +277,7 @@ class Provider(models.Model):
 
     @classmethod
     def save_provider(cls, provider_data):
+        """"Guarda un nuevo proveedor en la base de datos"""
         errors = validate_provider(provider_data)
 
         if len(errors.keys()) > 0:
@@ -281,6 +293,7 @@ class Provider(models.Model):
         return True, None
 
     def update_provider(self, provider_data):
+        """"Actualiza los datos de un proveedor"""
         self.name = provider_data.get("name","") or self.name
         self.email = provider_data.get("email","") or self.email
         self.address = provider_data.get("address","") or self.address 
