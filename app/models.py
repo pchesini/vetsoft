@@ -28,11 +28,9 @@ def validate_client(data):
 
     if phone == "":
         errors["phone"] = "Por favor ingrese un teléfono"
-    else:
-        try:
-            int(phone)
-        except ValueError:
-            errors["phone"] = "Por favor ingrese un teléfono válido"
+    elif not phone.startswith("54"):
+        errors["phone"]="El teléfono debe comenzar con 54"
+
 
     if email == "":
         errors["email"] = "Por favor ingrese un email"
@@ -63,6 +61,7 @@ def validate_vet(data):
         errors["email"] = "Por favor ingrese un email valido"
 
     return errors
+
 
 
 def validate_medicine(data):
