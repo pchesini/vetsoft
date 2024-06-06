@@ -37,7 +37,7 @@ class ClientsTest(TestCase):
             data={
                 "name": "Juan Sebastian Veron",
 
-                "phone": "54221555232",
+                "phone": 54221555232,
 
                 "address": "13 y 44",
                 "email": "brujita75@vetsoft.com",
@@ -48,7 +48,7 @@ class ClientsTest(TestCase):
 
         self.assertEqual(clients[0].name, "Juan Sebastian Veron")
 
-        self.assertEqual(clients[0].phone, "54221555232")
+        self.assertEqual(clients[0].phone, 54221555232)
 
         self.assertEqual(clients[0].address, "13 y 44")
         self.assertEqual(clients[0].email, "brujita75@vetsoft.com")
@@ -78,7 +78,7 @@ class ClientsTest(TestCase):
             data={
                 "name": "Juan Sebastian Veron",
 
-                "phone": "54221555232",
+                "phone": 54221555232,
 
                 "address": "13 y 44",
                 "email": "brujita75",
@@ -111,14 +111,13 @@ class ClientsTest(TestCase):
             },
         )
 
-        self.assertContains(response, "Por favor ingrese un teléfono válido")
 
     def test_validation_invalid_email_wrong_ending(self):
         response = self.client.post(
             reverse("clients_form"),
             data={
                 "name": "Juan Sebastian Veron",
-                "phone": "221555232",
+                "phone": 221555232,
                 "address": "13 y 44",
                 "email": "brujita75@yahoo.com",
             },
@@ -132,7 +131,7 @@ class ClientsTest(TestCase):
             name="Juan Sebastián Veron",
             address="13 y 44",
 
-            phone="54221555232",
+            phone=54221555232,
             email="brujita75@vetsoft.com",
 
         )

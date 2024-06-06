@@ -224,7 +224,8 @@ class ClientCreateEditTestCase(PlaywrightTestCase):
         client_phone = Client.objects.get(name="Juan Sebastián Veron").phone
 
         # Validar que el teléfono comienza con '54'
-        self.assertTrue(client_phone.startswith("54"))
+        self.assertTrue(str(client_phone).startswith('54'))
+
 
 
     def test_should_be_able_to_create_a_new_client(self):
