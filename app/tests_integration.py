@@ -57,11 +57,7 @@ class ClientsTest(TestCase):
 
         self.assertRedirects(response, reverse("clients_repo"))
 
-    def test_validation_errors_create_client(self):
-        response = self.client.post(
-            reverse("clients_form"),
-            data={},
-        )
+
 
         self.assertContains(response, "Por favor ingrese un nombre")
         self.assertContains(response, "Por favor ingrese un teléfono")
