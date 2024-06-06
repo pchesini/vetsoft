@@ -64,14 +64,14 @@ class ClientModelTest(TestCase):
 
         client_updated = Client.objects.get(pk=1)
 
-        self.assertEqual(client_updated.phone, "221555232")
+        self.assertEqual(client_updated.phone, 221555232)
     def test_name_validation_only_letters_and_spaces(self):
         # Intenta guardar un cliente con un nombre válido
         valid_client_data = {
             "name": "Juan Sebastian Veron",
-            "phone": "221555232",
+            "phone": 221555232,
             "address": "13 y 44",
-            "email": "brujita75@hotmail.com",
+            "email": "brujita75@vetsoft.com",
         }
         is_saved, errors = Client.save_client(valid_client_data)
 
@@ -82,23 +82,22 @@ class ClientModelTest(TestCase):
         # Intenta guardar un cliente con un nombre inválido
         invalid_client_data = {
             "name": "Juan123",
-            "phone": "221555232",
+            "phone": 221555232,
             "address": "13 y 44",
-            "email": "brujita75@hotmail.com",
+            "email": "brujita75@vetsoft.com",
         }
         is_saved, errors = Client.save_client(invalid_client_data)
 
         # Verifica que el cliente no se haya guardado debido a la validación
         self.assertFalse(is_saved)
         self.assertIn("name", errors)
-        self.assertEqual(client_updated.phone, 221555232)
 
     def test_can_not_create_with_invalid_email(self):
 
         Client.save_client(
             {
                 "name": "Juan Sebastian Veron",
-                "phone": "221555232",
+                "phone": 221555232,
                 "address": "13 y 44",
                 "email": "brujita75@yahoo.com",
             }
