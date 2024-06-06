@@ -1,3 +1,4 @@
+from django.core.validators import RegexValidator
 from django.db import models
 from django.utils.translation import gettext_lazy as _
 
@@ -14,6 +15,11 @@ def validate_client(data):
 
     if phone == "":
         errors["phone"] = "Por favor ingrese un teléfono"
+    else:
+        try:
+            int(phone)
+        except ValueError:
+            errors["phone"] = "Por favor ingrese un teléfono válido"
 
     if email == "":
         errors["email"] = "Por favor ingrese un email"
@@ -135,7 +141,13 @@ class Client(models.Model):
         address (str): La dirección física del cliente.
     """
     name = models.CharField(max_length=100)
-    phone = models.CharField(max_length=15)
+    phone = models.BigIntegerField(
+        validators=[
+            RegexValidator(
+                regex=r'^\d+$',
+                message="El teléfono debe contener solo números.",
+            ),
+        ])
     email = models.EmailField()
     address = models.CharField(max_length=100, blank=True)
 
