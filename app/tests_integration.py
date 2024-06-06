@@ -14,6 +14,7 @@ class HomePageTest(TestCase):
 
 
 class ClientsTest(TestCase):
+    """Pruebas para el manejo de clientes."""
     def test_validation_errors_create_client(self):
         response = self.client.post(
             reverse("clients_form"),
@@ -138,7 +139,7 @@ class ClientsTest(TestCase):
     def test_edit_user_with_valid_data(self):
         """Verifica si se puede editar un cliente con datos válidos."""
         client = Client.objects.create(
-            name="Juan Sebastián Veron",
+            name="Juan Sebastian Veron",
             address="13 y 44",
             phone=221555232,
             email="brujita75@vetsoft.com",

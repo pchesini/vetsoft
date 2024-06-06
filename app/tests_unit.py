@@ -65,6 +65,7 @@ class ClientModelTest(TestCase):
         client_updated = Client.objects.get(pk=1)
 
         self.assertEqual(client_updated.phone, 221555232)
+        
     def test_name_validation_only_letters_and_spaces(self):
         # Intenta guardar un cliente con un nombre válido
         valid_client_data = {
