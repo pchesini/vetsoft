@@ -251,6 +251,17 @@ class ClientCreateEditTestCase(PlaywrightTestCase):
         expect(edit_action).to_have_attribute(
             "href", reverse("clients_edit", kwargs={"id": client.id})
         )
+    def test_should_view_errors_if_email_does_not_end_correctly(self):
+
+        self.page.goto(f"{self.live_server_url}{reverse('clients_form')}")
+
+        self.page.get_by_label("Email").fill("brujita75@yahoo.com")
+
+        self.page.get_by_role("button", name="Guardar").click()
+
+        expect(
+            self.page.get_by_text("Por favor ingrese un email terminado en @vetsoft.com")
+        ).to_be_visible()
 
 
 class MedicineCreateEditTestCase(PlaywrightTestCase):
