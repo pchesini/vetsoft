@@ -1,6 +1,6 @@
+from django.core.validators import RegexValidator
 from django.db import models
 from django.utils.translation import gettext_lazy as _
-from django.core.validators import RegexValidator
 
 
 def validate_client(data):
@@ -145,8 +145,8 @@ class Client(models.Model):
         validators=[
             RegexValidator(
                 regex=r'^\d+$',
-                message="El teléfono debe contener solo números."
-            )
+                message="El teléfono debe contener solo números.",
+            ),
         ])
     email = models.EmailField()
     address = models.CharField(max_length=100, blank=True)
