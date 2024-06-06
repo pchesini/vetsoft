@@ -11,7 +11,9 @@ class ClientModelTest(TestCase):
         Client.save_client(
             {
                 "name": "Juan Sebastian Veron",
+
                 "phone": "54221555232",
+
                 "address": "13 y 44",
                 "email": "brujita75@vetsoft.com",
             }
@@ -21,6 +23,7 @@ class ClientModelTest(TestCase):
 
         self.assertEqual(clients[0].name, "Juan Sebastian Veron")
         self.assertEqual(clients[0].phone, "54221555232")
+
         self.assertEqual(clients[0].address, "13 y 44")
         self.assertEqual(clients[0].email, "brujita75@vetsoft.com")
 
@@ -30,12 +33,15 @@ class ClientModelTest(TestCase):
         Client.save_client(
             {
                 "name": "Juan Sebastian Veron",
+
                 "phone": "54221555232",
+
                 "address": "13 y 44",
                 "email": "brujita75@vetsoft.com",
             }
         )
         client = Client.objects.get(pk=1)
+
 
         self.assertEqual(client.phone, "54221555232")
 
@@ -45,13 +51,16 @@ class ClientModelTest(TestCase):
 
         self.assertEqual(client_updated.phone, "54221555233")
 
+
     def test_update_client_with_error(self):
         """Verifica si se puede actualizar un cliente con un error."""
 
         Client.save_client(
             {
                 "name": "Juan Sebastian Veron",
+
                 "phone": "54221555232",
+
                 "address": "13 y 44",
                 "email": "brujita75@vetsoft.com",
             }
@@ -60,11 +69,13 @@ class ClientModelTest(TestCase):
 
         self.assertEqual(client.phone, "54221555232")
 
+
         client.update_client({"phone": ""})
 
         client_updated = Client.objects.get(pk=1)
 
         self.assertEqual(client_updated.phone, "54221555232")
+
 
     def test_can_not_create_with_invalid_email(self):
 
