@@ -96,6 +96,22 @@ class ClientModelTest(TestCase):
         self.assertFalse(is_saved)
         self.assertIn("name", errors)
 
+    def test_name_validation_with_special_characters(self):
+    # Intenta guardar un cliente con un nombre que contiene caracteres especiales
+        special_characters_name = "Juan&* Sebastian Veron"
+        client_data = {
+        "name": special_characters_name,
+        "phone": 54221555232,
+        "address": "13 y 44",
+        "email": "brujita75@vetsoft.com",
+    }
+
+    # Intenta guardar el cliente
+        is_saved, errors = Client.save_client(client_data)
+
+    # Verifica que el cliente no se haya guardado debido a la presencia de caracteres especiales
+        self.assertFalse(is_saved)
+        self.assertIn("name", errors)
 
     def test_can_not_create_with_invalid_email(self):
 
