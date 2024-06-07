@@ -168,7 +168,20 @@ class ClientsTest(TestCase):
         self.assertEqual(editedClient.phone, client.phone)
         self.assertEqual(editedClient.address, client.address)
         self.assertEqual(editedClient.email, client.email)
+    
+    def test_validation_invalid_name_with_special_characters(self):
+        """Verifica si se muestra un mensaje de error al intentar crear un cliente con un nombre que contiene caracteres especiales."""
+        response = self.client.post(
+        reverse("clients_form"),
+        data={
+            "name": "Juan# Sebastian Veron",  # Nombre con caracteres especiales
+            "phone": "54221555232",
+            "address": "13 y 44",
+            "email": "brujita75@vetsoft.com",
+        },
+    )
 
+        self.assertContains(response, "El nombre solo puede contener letras y espacios.")
 ###TEST MEDICINE###
 class MedicineTest(TestCase):
     """Pruebas para el manejo de medicamentos."""
