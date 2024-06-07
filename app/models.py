@@ -15,7 +15,9 @@ def validate_client(data):
     errors = {}
 
     name = data.get("name", "")
-    phone = data.get("phone", "")
+    phone = str(data.get("phone", ""))  # Convertir a cadena
+
+    #phone = data.get("phone", "")
     email = data.get("email", "")
 
     if name == "":

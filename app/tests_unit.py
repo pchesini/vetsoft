@@ -75,8 +75,10 @@ class ClientModelTest(TestCase):
             "address": "13 y 44",
             "email": "brujita75@vetsoft.com",
         }
-        is_saved, errors = Client.save_client(valid_client_data)
+       
+        is_saved, errors = Client.save_client(valid_client_data)  # Aquí guardamos el cliente válido
 
+       
         # Verifica que el cliente se haya guardado correctamente
         self.assertTrue(is_saved)
         self.assertIsNone(errors)
