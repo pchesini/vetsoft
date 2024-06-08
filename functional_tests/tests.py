@@ -263,6 +263,22 @@ class ClientCreateEditTestCase(PlaywrightTestCase):
             self.page.get_by_text("Por favor ingrese un email terminado en @vetsoft.com")
         ).to_be_visible()
  
+        """def test_should_view_errors_if_name_contains_special_characters(self):
+        self.page.goto(f"{self.live_server_url}{reverse('clients_form')}")
+
+        expect(self.page.get_by_role("form")).to_be_visible()
+
+        self.page.get_by_label("Nombre").fill("Juan# Sebastian Veron")  # Nombre con caracteres especiales
+
+        self.page.get_by_label("Teléfono").fill("54221555232")
+        self.page.get_by_label("Email").fill("brujita75@vetsoft.com")
+        self.page.get_by_label("Dirección").fill("13 y 44")
+
+        self.page.get_by_role("button", name="Guardar").click()
+
+        expect(
+            self.page.get_by_text("El nombre solo puede contener letras y espacios.")
+        ).to_be_visible()"""
 
 
 class MedicineCreateEditTestCase(PlaywrightTestCase):

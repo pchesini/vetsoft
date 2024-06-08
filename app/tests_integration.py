@@ -180,8 +180,24 @@ class ClientsTest(TestCase):
             "email": "brujita75@vetsoft.com",
         },
     )
-
+    
         self.assertContains(response, "El nombre solo puede contener letras y espacios.")
+    
+    def test_validation_phone_not_starting_with_54(self):
+        """Verifica si se muestra un mensaje de error al intentar crear un cliente con un teléfono que no comienza con 54."""
+        response = self.client.post(
+        reverse("clients_form"),
+        data={
+            "name": "Juan Sebastian Veron",
+            "phone": "123456789",  # Teléfono que no comienza con 54
+            "address": "13 y 44",
+            "email": "brujita75@vetsoft.com",
+        },
+    )
+
+        self.assertContains(response, "El teléfono debe comenzar con 54")
+
+     
 ###TEST MEDICINE###
 class MedicineTest(TestCase):
     """Pruebas para el manejo de medicamentos."""
