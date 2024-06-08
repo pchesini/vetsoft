@@ -15,6 +15,22 @@ class HomePageTest(TestCase):
 
 class ClientsTest(TestCase):
     """Pruebas para el manejo de clientes."""
+    def test_validation_errors_create_client(self):
+        response = self.client.post(
+            reverse("clients_form"),
+            data={
+                "name": "",  # Campo name vacío para provocar un error de validación
+                "phone": "221555232",
+                "address": "13 y 44",
+                "email": "brujita75@hotmail.com",
+        },
+    )
+
+        self.assertContains(response, "Por favor ingrese un nombre")
+        self.assertContains(response, "Por favor ingrese un teléfono")
+        self.assertContains(response, "Por favor ingrese un email")
+    
+    """Pruebas para el manejo de clientes."""
     def test_repo_use_repo_template(self):
         """Verifica si se utiliza el template correcto para la página de repositorio de clientes."""
         response = self.client.get(reverse("clients_repo"))
@@ -128,7 +144,7 @@ class ClientsTest(TestCase):
     def test_edit_user_with_valid_data(self):
         """Verifica si se puede editar un cliente con datos válidos."""
         client = Client.objects.create(
-            name="Juan Sebastián Veron",
+            name="Juan Sebastian Veron",
             address="13 y 44",
 
             phone=54221555232,
@@ -152,7 +168,36 @@ class ClientsTest(TestCase):
         self.assertEqual(editedClient.phone, client.phone)
         self.assertEqual(editedClient.address, client.address)
         self.assertEqual(editedClient.email, client.email)
+    
+    def test_validation_invalid_name_with_special_characters(self):
+        """Verifica si se muestra un mensaje de error al intentar crear un cliente con un nombre que contiene caracteres especiales."""
+        response = self.client.post(
+        reverse("clients_form"),
+        data={
+            "name": "Juan# Sebastian Veron",  # Nombre con caracteres especiales
+            "phone": "54221555232",
+            "address": "13 y 44",
+            "email": "brujita75@vetsoft.com",
+        },
+    )
+    
+        self.assertContains(response, "El nombre solo puede contener letras y espacios.")
+    
+    def test_validation_phone_not_starting_with_54(self):
+        """Verifica si se muestra un mensaje de error al intentar crear un cliente con un teléfono que no comienza con 54."""
+        response = self.client.post(
+        reverse("clients_form"),
+        data={
+            "name": "Juan Sebastian Veron",
+            "phone": "123456789",  # Teléfono que no comienza con 54
+            "address": "13 y 44",
+            "email": "brujita75@vetsoft.com",
+        },
+    )
 
+        self.assertContains(response, "El teléfono debe comenzar con 54")
+
+     
 ###TEST MEDICINE###
 class MedicineTest(TestCase):
     """Pruebas para el manejo de medicamentos."""
@@ -354,7 +399,21 @@ class ProductsTest(TestCase):
         self.assertEqual(editedProduct.type, product.type)
         self.assertEqual(editedProduct.price, product.price)
 
+    def test_display_all_products(self):
+        """Verifica si se muestran todos los productos en la página de repositorio de productos."""
+        # Crear varios productos
+        Product.objects.create(name="Producto 1", type="Alimento", price=100.0)
+        Product.objects.create(name="Producto 2", type="Medicamento", price=200.0)
+        Product.objects.create(name="Producto 3", type="Juguete", price=50.0)
 
+        response = self.client.get(reverse("products_repo"))
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response, "products/repository.html")
+
+        # Verificar que todos los productos se muestran en la página
+        self.assertContains(response, "Producto 1")
+        self.assertContains(response, "Producto 2")
+        self.assertContains(response, "Producto 3")
 
 class ProviderIntegrationTest(TestCase):
     """Verifica si se puede editar un producto con datos válidos."""

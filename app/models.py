@@ -1,17 +1,32 @@
+import re
+
+from django.core.exceptions import ValidationError
 from django.core.validators import RegexValidator
 from django.db import models
 from django.utils.translation import gettext_lazy as _
+
+
+def validate_name(name):
+    if not re.match(r'^[a-zA-Z\s]+$', name):
+        raise ValidationError('El nombre solo puede contener letras y espacios.')
 
 
 def validate_client(data):
     errors = {}
 
     name = data.get("name", "")
-    phone = data.get("phone", "")
+    phone = str(data.get("phone", ""))  # Convertir a cadena
+
+    #phone = data.get("phone", "")
     email = data.get("email", "")
 
     if name == "":
         errors["name"] = "Por favor ingrese un nombre"
+    else:
+        try:
+            validate_name(name)
+        except ValidationError as e:
+            errors["name"] = str(e)
 
     if phone == "":
         errors["phone"] = "Por favor ingrese un teléfono"
@@ -179,8 +194,19 @@ class Client(models.Model):
         self.phone = client_data.get("phone", "") or self.phone
         self.address = client_data.get("address", "") or self.address
 
-        self.save()
+         # Validar los datos actualizados
+        updated_data = {
+            'name': self.name,
+            'email': self.email,
+            'phone': self.phone,
+            'address': self.address,
+        }
+        errors = validate_client(updated_data)
+        if errors:
+            return False, errors
 
+        self.save()
+        return True, None
 
 class Product(models.Model):
     """Representa un producto disponible para la venta.
