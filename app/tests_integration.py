@@ -399,7 +399,21 @@ class ProductsTest(TestCase):
         self.assertEqual(editedProduct.type, product.type)
         self.assertEqual(editedProduct.price, product.price)
 
+    def test_display_all_products(self):
+        """Verifica si se muestran todos los productos en la página de repositorio de productos."""
+        # Crear varios productos
+        Product.objects.create(name="Producto 1", type="Alimento", price=100.0)
+        Product.objects.create(name="Producto 2", type="Medicamento", price=200.0)
+        Product.objects.create(name="Producto 3", type="Juguete", price=50.0)
 
+        response = self.client.get(reverse("products_repo"))
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response, "products/repository.html")
+
+        # Verificar que todos los productos se muestran en la página
+        self.assertContains(response, "Producto 1")
+        self.assertContains(response, "Producto 2")
+        self.assertContains(response, "Producto 3")
 
 class ProviderIntegrationTest(TestCase):
     """Verifica si se puede editar un producto con datos válidos."""
