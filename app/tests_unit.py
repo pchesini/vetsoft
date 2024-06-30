@@ -66,7 +66,7 @@ class ClientModelTest(TestCase):
 
 
         self.assertEqual(client_updated.phone, 54221555232)
-        
+
     def test_name_validation_only_letters_and_spaces(self):
         # Intenta guardar un cliente con un nombre válido
         valid_client_data = {
@@ -75,10 +75,10 @@ class ClientModelTest(TestCase):
             "address": "13 y 44",
             "email": "brujita75@vetsoft.com",
         }
-       
+
         is_saved, errors = Client.save_client(valid_client_data)  # Aquí guardamos el cliente válido
 
-       
+
         # Verifica que el cliente se haya guardado correctamente
         self.assertTrue(is_saved)
         self.assertIsNone(errors)
@@ -113,9 +113,9 @@ class ClientModelTest(TestCase):
         self.assertFalse(is_saved)
         self.assertIn("name", errors)
 
-    def test_can_not_create_with_invalid_email(self):
+    def test_can_not_create_without_vetsoft_email(self):
 
-        Client.save_client(
+        is_saved, errors = Client.save_client(
             {
                 "name": "Juan Sebastian Veron",
                 "phone": 54221555232,
@@ -123,8 +123,23 @@ class ClientModelTest(TestCase):
                 "email": "brujita75@yahoo.com",
             }
         )
-        clients = Client.objects.all()
-        self.assertNotEqual(len(clients), 1)
+        self.assertFalse(is_saved)
+        self.assertIn("email", errors)
+        self.assertIn("Por favor ingrese un email terminado en @vetsoft.com", errors["email"])
+
+    def test_can_not_create_with_invalid_email(self):
+
+        is_saved, errors = Client.save_client(
+            {
+                "name": "Juan Sebastian Veron",
+                "phone": 54221555232,
+                "address": "13 y 44",
+                "email": "@vetsoft.com",
+            }
+        )
+        self.assertFalse(is_saved)
+        self.assertIn("email", errors)
+        self.assertIn("Por favor ingrese un email valido", errors["email"])
 
 
 
