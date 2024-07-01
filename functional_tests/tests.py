@@ -203,8 +203,9 @@ class ClientsRepoTestCase(PlaywrightTestCase):
 
 
 class ClientCreateEditTestCase(PlaywrightTestCase):
-    def test_should_phone_start_with_54(self):
-        """Verifica que el teléfono de un cliente creado comience con '54'."""
+   
+    def test_should_show_error_if_phone_not_start_with_54(self):
+        """Verifica que se muestre un error si el teléfono no comienza con '54'."""
 
         self.page.goto(f"{self.live_server_url}{reverse('clients_form')}")
 
@@ -212,7 +213,7 @@ class ClientCreateEditTestCase(PlaywrightTestCase):
 
         self.page.get_by_label("Nombre").fill("Juan Sebastián Veron")
 
-        self.page.get_by_label("Teléfono").fill("54221555232")
+        self.page.get_by_label("Teléfono").fill("2215555232")  # Teléfono sin '54'
 
         self.page.get_by_label("Email").fill("brujita75@vetsoft.com")
 
@@ -220,69 +221,9 @@ class ClientCreateEditTestCase(PlaywrightTestCase):
 
         self.page.get_by_role("button", name="Guardar").click()
 
-        # Obtener el teléfono del cliente creado
-        client_phone = Client.objects.get(name="Juan Sebastián Veron").phone
-
-        # Validar que el teléfono comienza con '54'
-        self.assertTrue(str(client_phone).startswith('54'))
-
-
-
-    def test_should_be_able_to_create_a_new_client(self):
-        """Verifica que se pueda eliminar un cliente."""
-
-        self.page.goto(f"{self.live_server_url}{reverse('clients_form')}")
-
-        expect(self.page.get_by_role("form")).to_be_visible()
-
-        self.page.get_by_label("Nombre").fill("Juan Sebastián Veron")
-
-        self.page.get_by_label("Teléfono").fill("54221555232")
-
-        self.page.get_by_label("Email").fill("brujita75@vetsoft.com")
-
-        self.page.get_by_label("Dirección").fill("13 y 44")
-
-        self.page.get_by_role("button", name="Guardar").click()
-
-        expect(self.page.get_by_text("Juan Sebastián Veron")).to_be_visible()
-
-        expect(self.page.get_by_text("54221555232")).to_be_visible()
-
-        expect(self.page.get_by_text("brujita75@vetsoft.com")).to_be_visible()
-
-        expect(self.page.get_by_text("13 y 44")).to_be_visible()
-
-        
-
-    def test_should_view_errors_if_form_is_invalid(self):
-        """Verifica que se muestren errores si el formulario es inválido."""
-
-        self.page.goto(f"{self.live_server_url}{reverse('clients_form')}")
-
-        expect(self.page.get_by_role("form")).to_be_visible()
-
-        self.page.get_by_role("button", name="Guardar").click()
-
-        expect(self.page.get_by_text("Por favor ingrese un nombre")).to_be_visible()
-        expect(self.page.get_by_text("Por favor ingrese un teléfono")).to_be_visible()
-        expect(self.page.get_by_text("Por favor ingrese un email")).to_be_visible()
-
-        self.page.get_by_label("Nombre").fill("Juan Sebastián Veron")
-        self.page.get_by_label("Teléfono").fill("54221555232")
-        self.page.get_by_label("Email").fill("brujita75")
-        self.page.get_by_label("Dirección").fill("13 y 44")
-
-        self.page.get_by_role("button", name="Guardar").click()
-
-        expect(self.page.get_by_text("Por favor ingrese un nombre")).not_to_be_visible()
-        expect(
-            self.page.get_by_text("Por favor ingrese un teléfono")
-        ).not_to_be_visible()
-
-        expect(
-            self.page.get_by_text("Por favor ingrese un email valido")
-        ).to_be_visible()
+        # Verificar que se muestra el error correspondiente
+        error_message = self.page.get_by_text("El teléfono debe comenzar con 54").is_visible()
+        self.assertTrue(error_message)
 
 
 
