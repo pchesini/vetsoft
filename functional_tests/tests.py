@@ -213,7 +213,7 @@ class ClientCreateEditTestCase(PlaywrightTestCase):
 
         self.page.get_by_label("Nombre").fill("Juan Sebastián Veron")
 
-        self.page.get_by_label("Teléfono").fill("2215555232")  # Teléfono sin '54'
+        self.page.get_by_label("Teléfono").fill("2215555232")  
 
         self.page.get_by_label("Email").fill("brujita75@vetsoft.com")
 
@@ -279,6 +279,22 @@ class ClientCreateEditTestCase(PlaywrightTestCase):
             "href", reverse("clients_edit", kwargs={"id": client.id})
         )
 
+    def test_should_show_error_if_phone_is_not_numeric(self):
+        """Verifica que se muestra un error si el teléfono no es numérico."""
+
+        self.page.goto(f"{self.live_server_url}{reverse('clients_form')}")
+
+        # Completar el formulario con un teléfono no numérico
+        self.page.get_by_label("Nombre").fill("Juan Sebastián Veron")
+        self.page.get_by_label("Teléfono").fill("54221A555232")  # Teléfono no numérico
+        self.page.get_by_label("Email").fill("brujita75@vetsoft.com")
+        self.page.get_by_label("Dirección").fill("13 y 44")
+
+        self.page.get_by_role("button", name="Guardar").click()
+
+        # Verificar que se muestra el mensaje de error correspondiente
+        error_message = self.page.get_by_text("El teléfono debe ser numérico").is_visible()
+        self.assertTrue(error_message)
 
 class MedicineCreateEditTestCase(PlaywrightTestCase):
     def test_should_be_able_to_create_a_new_medicine(self):
