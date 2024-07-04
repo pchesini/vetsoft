@@ -178,6 +178,20 @@ class ClientCreateEditTestCase(PlaywrightTestCase):
     def test_should_show_error_if_phone_not_start_with_54(self):
         """Verifica que se muestre un error si el teléfono no comienza con '54'."""
 
+        self.page.goto(f"{self.live_server_url}{reverse('clients_form')}")
+
+        expect(self.page.get_by_role("form")).to_be_visible()
+
+        # Prueba con un teléfono que no comienza con '54'
+        self.page.get_by_label("Nombre").fill("Juan Sebastian Veron")
+        self.page.get_by_label("Teléfono").fill("1234567890")  # Teléfono inválido
+        self.page.get_by_label("Email").fill("brujita75@vetsoft.com")
+        self.page.get_by_label("Dirección").fill("13 y 44")
+
+        self.page.get_by_role("button", name="Guardar").click()
+
+        expect(self.page.get_by_text("El teléfono debe comenzar con 54")).to_be_visible()
+
     def test_should_be_able_to_create_a_new_client(self):
 
         self.page.goto(f"{self.live_server_url}{reverse('clients_form')}")
@@ -270,28 +284,6 @@ class ClientCreateEditTestCase(PlaywrightTestCase):
             self.page.get_by_text("Por favor ingrese un email terminado en @vetsoft.com")
         ).to_be_visible()
  
-    def test_should_phone_start_with_54(self):
-        """Verifica que el teléfono de un cliente creado comience con '54'."""
-
-        self.page.goto(f"{self.live_server_url}{reverse('clients_form')}")
-
-        expect(self.page.get_by_role("form")).to_be_visible()
-
-        self.page.get_by_label("Nombre").fill("Juan Sebastian Veron")
-
-        self.page.get_by_label("Teléfono").fill("54221555232")
-
-        self.page.get_by_label("Email").fill("brujita75@vetsoft.com")
-
-        self.page.get_by_label("Dirección").fill("13 y 44")
-
-        self.page.get_by_role("button", name="Guardar").click()
-
-        # Obtener el teléfono del cliente creado
-        client_phone = Client.objects.get(name="Juan Sebastian Veron").phone
-
-        # Validar que el teléfono comienza con '54'
-        self.assertTrue(str(client_phone).startswith('54'))
 
     def test_should_show_error_if_phone_is_not_numeric(self):
         """Verifica que se muestra un error si el teléfono no es numérico."""
