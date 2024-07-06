@@ -32,6 +32,8 @@ def validate_client(data):
         errors["phone"] = "Por favor ingrese un teléfono"
     elif not phone.startswith("54"):
         errors["phone"]="El teléfono debe comenzar con 54"
+    elif not phone.isdigit():  # Verifica si el teléfono contiene solo dígitos
+        errors["phone"] = "El teléfono debe ser numérico"
 
 
     if email == "":

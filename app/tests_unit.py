@@ -1,6 +1,7 @@
+from django.forms import ValidationError
 from django.test import TestCase
 
-from app.models import Client, Medi, Product, Provider, Vet
+from app.models import Client, Medi, Product, Provider, Vet, validate_client
 
 
 class ClientModelTest(TestCase):
@@ -142,6 +143,38 @@ class ClientModelTest(TestCase):
         self.assertIn("Por favor ingrese un email valido", errors["email"])
 
 
+    def test_phone_number_must_be_numeric(self):
+        """Verifica que el número de teléfono sea numérico."""
+
+        # Prueba con un teléfono numérico válido
+        data = {
+            "name": "Juan Sebastian Veron",
+            "phone": "54221555232",
+            "address": "13 y 44",
+            "email": "brujita75@vetsoft.com",
+        }
+        errors = validate_client(data)
+        self.assertEqual(errors, {})
+
+        # Prueba con un teléfono no numérico
+        data = {
+            "name": "Juan Sebastian Veron",
+            "phone": "54221A555232",
+            "address": "13 y 44",
+            "email": "brujita75@vetsoft.com",
+        }
+        errors = validate_client(data)
+        self.assertEqual(errors, {"phone": "El teléfono debe ser numérico"})
+
+        # Prueba con un teléfono que contiene espacios
+        data = {
+            "name": "Juan Sebastian Veron",
+            "phone": "54221 555 232",
+            "address": "13 y 44",
+            "email": "brujita75@vetsoft.com",
+        }
+        errors = validate_client(data)
+        self.assertEqual(errors, {"phone": "El teléfono debe ser numérico"})
 
 class MedicineModelTest(TestCase):
     """Pruebas para el modelo Medi (Medicine)."""
