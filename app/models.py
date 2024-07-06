@@ -193,10 +193,10 @@ class Client(models.Model):
 
     def update_client(self, client_data):
         """Actualizar datos de un cliente"""
-        self.name = client_data.get("name", "") or self.name
-        self.email = client_data.get("email", "") or self.email
-        self.phone = client_data.get("phone", "") or self.phone
-        self.address = client_data.get("address", "") or self.address
+        self.name = client_data.get("name", self.name)
+        self.email = client_data.get("email", self.email)
+        self.phone = client_data.get("phone", self.phone)
+        self.address = client_data.get("address", self.address)
 
          # Validar los datos actualizados
         updated_data = {
