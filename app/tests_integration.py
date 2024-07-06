@@ -169,6 +169,30 @@ class ClientsTest(TestCase):
         self.assertEqual(editedClient.address, client.address)
         self.assertEqual(editedClient.email, client.email)
     
+    def test_edit_client_with_invalid_data(self):
+        """Verifica si se puede editar un cliente con datos inválidos."""
+        client = Client.objects.create(
+            name="Juan Sebastian Veron",
+            address="13 y 44",
+            phone=54221555232,
+            email="brujita75@vetsoft.com",
+
+        )
+
+        response = self.client.post(
+            reverse("clients_form"),
+            data={
+                "id": client.id,
+                "name": "",
+                "phone":"221555232",
+                "email": "brujita75@yahoo.com",
+            },
+        )
+
+        self.assertContains(response, "Por favor ingrese un nombre")
+        self.assertContains(response, "El teléfono debe comenzar con 54")
+        self.assertContains(response, "Por favor ingrese un email terminado en @vetsoft.com")
+
     def test_validation_invalid_name_with_special_characters(self):
         """Verifica si se muestra un mensaje de error al intentar crear un cliente con un nombre que contiene caracteres especiales."""
         response = self.client.post(
