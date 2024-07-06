@@ -98,7 +98,7 @@ class ClientModelTest(TestCase):
         self.assertIn("name", errors)
 
     def test_updating_client_should_return_errors(self):
-
+        """Verifica que al editar un cliente, si se ingresa un campo vacío retorne errores"""
         Client.save_client(
             {
             "name": "Juan Sebastian Veron",
