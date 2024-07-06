@@ -20,14 +20,14 @@ def validate_client(data):
     #phone = data.get("phone", "")
     email = data.get("email", "")
 
+
     if name == "":
         errors["name"] = "Por favor ingrese un nombre"
     else:
-        try:
-            validate_name(name)
-        except ValidationError as e:
-            errors["name"] = str(e)
+        if not re.match(r'^[a-zA-Z\s]+$', name):
+            errors["name"] = "El nombre solo puede contener letras y espacios."
 
+    
     if phone == "":
         errors["phone"] = "Por favor ingrese un teléfono"
     elif not phone.startswith("54"):
@@ -158,7 +158,15 @@ class Client(models.Model):
         email (str): La dirección de correo electrónico del cliente.
         address (str): La dirección física del cliente.
     """
-    name = models.CharField(max_length=100)
+    name = models.CharField(
+        max_length=100,
+        validators=[
+            RegexValidator(
+                regex=r'^[a-zA-Z\s]+$',
+                message="El nombre solo puede contener letras y espacios.",
+            ),
+        ],
+    )
     phone = models.BigIntegerField(
         validators=[
             RegexValidator(
