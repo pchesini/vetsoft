@@ -6,9 +6,9 @@ from django.db import models
 from django.utils.translation import gettext_lazy as _
 
 
-def validate_name(name):
-    if not re.match(r'^[a-zA-Z\s]+$', name):
-        raise ValidationError('El nombre solo puede contener letras y espacios.')
+# def validate_name(name):
+#     if not re.match(r'^[a-zA-Z\s]+$', name):
+#         raise ValidationError('El nombre solo puede contener letras y espacios.')
 
 
 def validate_client(data):
