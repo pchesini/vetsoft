@@ -97,6 +97,33 @@ class ClientModelTest(TestCase):
         self.assertFalse(is_saved)
         self.assertIn("name", errors)
 
+    def test_updating_client_should_return_errors(self):
+        """Verifica que al editar un cliente, si se ingresa un campo vacío retorne errores"""
+        Client.save_client(
+            {
+            "name": "Juan Sebastian Veron",
+            "address": "13 y 44",
+            "phone": "54221555232",
+            "email": "brujita75@vetsoft.com",
+            }
+        )
+
+        client = Client.objects.get(pk=1)
+
+        is_saved, errors = client.update_client(
+            {
+            "name": "", #campo de nombre vacío para que muestre el error
+            "phone": "54221555232",
+            "address": "13 y 44",
+            "email": "brujita75@yahoo.com",
+            }
+        )
+
+        self.assertFalse(is_saved)
+        self.assertIn("name", errors)
+        self.assertIn("Por favor ingrese un nombre", errors["name"])
+
+
     def test_name_validation_with_special_characters(self):
     # Intenta guardar un cliente con un nombre que contiene caracteres especiales
         special_characters_name = "Juan&* Sebastian Veron"

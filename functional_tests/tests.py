@@ -310,6 +310,35 @@ class ClientCreateEditTestCase(PlaywrightTestCase):
         error_message = self.page.get_by_text("El teléfono debe ser numérico").is_visible()
         self.assertTrue(error_message)
 
+    def test_should_show_errors_when_editing_a_client(self):
+        """Verifica que al editar un cliente se muestren los errores correctamente"""
+        client = Client.objects.create(
+            name="Juan Sebastian Veron",
+            address="13 y 44",
+            phone="54221555232",
+            email="brujita75@vetsoft.com",
+        )
+
+        path = reverse("clients_edit", kwargs={"id": client.id})
+        self.page.goto(f"{self.live_server_url}{path}")
+
+        self.page.get_by_label("Nombre").fill("")   #Asigna un campo vacío
+        self.page.get_by_label("Teléfono").fill("221232555")    #Asigna un teléfono sin 54 adelante
+        self.page.get_by_label("Email").fill("@vetsoft.com")    #Asigna un email sin nada adelante del @
+        self.page.get_by_label("Dirección").fill("1 y 57")
+
+        self.page.get_by_role("button", name="Guardar").click()
+
+        expect(
+            self.page.get_by_text("Por favor ingrese un nombre")
+        ).to_be_visible()
+        expect(
+            self.page.get_by_text("El teléfono debe comenzar con 54")
+        ).to_be_visible()
+        expect(
+            self.page.get_by_text("Por favor ingrese un email valido")
+        ).to_be_visible()
+
 class MedicineCreateEditTestCase(PlaywrightTestCase):
     def test_should_be_able_to_create_a_new_medicine(self):
         self.page.goto(f"{self.live_server_url}{reverse('medi_form')}")
