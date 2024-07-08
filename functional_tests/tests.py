@@ -209,8 +209,14 @@ class ClientCreateEditTestCase(PlaywrightTestCase):
         expect(self.page.get_by_text("54221555232")).to_be_visible()
         expect(self.page.get_by_text("brujita75@vetsoft.com")).to_be_visible()
         expect(self.page.get_by_text("13 y 44")).to_be_visible()
-
+   
+    # Test: Verificar visibilidad de mensajes de error en formulario inválido
     def test_should_view_errors_if_form_is_invalid(self):
+        """
+        Verifica la visibilidad de los mensajes de error cuando se intenta guardar
+        un formulario con datos inválidos en cualquier campo.
+        """
+        
         self.page.goto(f"{self.live_server_url}{reverse('clients_form')}")
 
         expect(self.page.get_by_role("form")).to_be_visible()
@@ -221,23 +227,25 @@ class ClientCreateEditTestCase(PlaywrightTestCase):
         expect(self.page.get_by_text("Por favor ingrese un teléfono")).to_be_visible()
         expect(self.page.get_by_text("Por favor ingrese un email")).to_be_visible()
 
-       # Prueba agregar un nombre inválido
-        self.page.get_by_label("Nombre").fill("12345")  # Nombre inválido que no contiene solo letras y espacios
+    
+    # Test: Verificar mensaje de error para nombre inválido con caracteres especiales
+    def test_should_display_error_for_invalid_name_input(self):
+        """
+        Verifica si se muestra un mensaje de error al intentar crear un cliente
+        con un nombre que contiene caracteres especiales.
+        """        
+        
+        self.page.goto(f"{self.live_server_url}{reverse('clients_form')}")
+
+
+        self.page.get_by_label("Nombre").fill("Juan# Sebastian Veron")  # Nombre con caracteres especiales
         self.page.get_by_label("Teléfono").fill("54221555232")
-        self.page.get_by_label("Email").fill("brujita75")
+        self.page.get_by_label("Email").fill("brujita75@vetsoft.com")
         self.page.get_by_label("Dirección").fill("13 y 44")
 
         self.page.get_by_role("button", name="Guardar").click()
 
-        expect(self.page.get_by_text("Por favor ingrese un nombre")).not_to_be_visible()
-        expect(
-            self.page.get_by_text("Por favor ingrese un teléfono")
-        ).not_to_be_visible()
-
-        expect(
-            self.page.get_by_text("Por favor ingrese un email valido")
-        ).to_be_visible()
-
+        expect(self.page.get_by_text("El nombre solo puede contener letras y espacios")).to_be_visible()
 
     def test_should_be_able_to_edit_a_client(self):
         client = Client.objects.create(

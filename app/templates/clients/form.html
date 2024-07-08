@@ -26,7 +26,7 @@
                         id="name"
                         name="name"
                         value="{{client.name}}"
-                        class="form-control"
+                        class="form-control {% if errors.name %}is-invalid{% endif %}"
                         required/>
 
                     {% if errors.name %}
